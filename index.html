@@ -1,0 +1,2747 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Introduction to Web + HTML Basics — Session 1 of 15 | Web Design Bootcamp by Yousef Eldbah">
+<title>Session 1: Introduction to Web + HTML Basics | Web Design Bootcamp</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===== CSS RESET & ROOT ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg-primary:#0a0a1a;--bg-secondary:#111128;--bg-card:rgba(255,255,255,0.04);
+  --bg-glass:rgba(255,255,255,0.06);--bg-glass-hover:rgba(255,255,255,0.1);
+  --text-primary:#e8e8f0;--text-secondary:#a0a0c0;--text-muted:#6a6a8a;
+  --accent-blue:#6366f1;--accent-purple:#8b5cf6;--accent-pink:#ec4899;
+  --accent-cyan:#06b6d4;--accent-green:#10b981;--accent-orange:#f59e0b;--accent-red:#ef4444;
+  --gradient-primary:linear-gradient(135deg,#6366f1,#8b5cf6,#ec4899);
+  --gradient-secondary:linear-gradient(135deg,#06b6d4,#10b981);
+  --gradient-warm:linear-gradient(135deg,#f59e0b,#ef4444);
+  --border-color:rgba(255,255,255,0.08);--border-glass:rgba(255,255,255,0.12);
+  --radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:24px;
+  --shadow-sm:0 2px 8px rgba(0,0,0,0.3);--shadow-md:0 4px 20px rgba(0,0,0,0.4);
+  --shadow-lg:0 8px 40px rgba(0,0,0,0.5);--shadow-glow:0 0 30px rgba(99,102,241,0.15);
+  --sidebar-width:280px;--toc-width:220px;--navbar-height:64px;
+  --font-main:'Inter',sans-serif;--font-mono:'JetBrains Mono',monospace;--font-arabic:'Cairo',sans-serif;
+}
+html{scroll-behavior:smooth;font-size:16px;scrollbar-width:thin;scrollbar-color:var(--accent-blue) var(--bg-secondary)}
+body{font-family:var(--font-main);background:var(--bg-primary);color:var(--text-primary);line-height:1.7;overflow-x:hidden}
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:var(--bg-secondary)}
+::-webkit-scrollbar-thumb{background:var(--accent-blue);border-radius:4px}
+::selection{background:rgba(99,102,241,0.3);color:#fff}
+a{color:var(--accent-cyan);text-decoration:none;transition:all .3s}
+a:hover{color:var(--accent-purple);text-decoration:underline}
+img{max-width:100%;border-radius:var(--radius-md)}
+
+/* ===== TOP NAVBAR ===== */
+.navbar{position:fixed;top:0;left:0;right:0;height:var(--navbar-height);background:rgba(10,10,26,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border-color);z-index:1000;display:flex;align-items:center;padding:0 24px;gap:16px}
+.navbar-brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:1.1rem}
+.navbar-brand .logo{width:36px;height:36px;background:var(--gradient-primary);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:900;color:#fff}
+.navbar-brand span{background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.navbar-center{flex:1;display:flex;align-items:center;gap:8px}
+.navbar-search{background:var(--bg-glass);border:1px solid var(--border-glass);border-radius:var(--radius-md);padding:8px 16px;color:var(--text-primary);font-size:.9rem;width:320px;max-width:100%;outline:none;transition:all .3s}
+.navbar-search:focus{border-color:var(--accent-blue);box-shadow:0 0 0 3px rgba(99,102,241,0.15)}
+.navbar-right{display:flex;align-items:center;gap:12px}
+.nav-badge{background:var(--gradient-primary);color:#fff;padding:4px 12px;border-radius:20px;font-size:.75rem;font-weight:600}
+.hamburger{display:none;background:none;border:none;color:var(--text-primary);font-size:1.5rem;cursor:pointer;padding:4px}
+
+/* ===== SIDEBAR ===== */
+.sidebar{position:fixed;top:var(--navbar-height);left:0;width:var(--sidebar-width);height:calc(100vh - var(--navbar-height));background:rgba(17,17,40,0.95);backdrop-filter:blur(10px);border-right:1px solid var(--border-color);overflow-y:auto;padding:20px 0;z-index:900;transition:transform .3s}
+.sidebar-section{padding:0 16px;margin-bottom:24px}
+.sidebar-title{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted);margin-bottom:8px;padding:0 12px}
+.sidebar-link{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:var(--radius-sm);color:var(--text-secondary);font-size:.85rem;font-weight:500;cursor:pointer;transition:all .2s;text-decoration:none}
+.sidebar-link:hover{background:var(--bg-glass-hover);color:var(--text-primary);text-decoration:none}
+.sidebar-link.active{background:rgba(99,102,241,0.15);color:var(--accent-blue);border-left:3px solid var(--accent-blue)}
+.sidebar-link .icon{font-size:1rem;width:20px;text-align:center}
+.sidebar-progress{margin:0 16px;padding:16px;background:var(--bg-glass);border-radius:var(--radius-md);border:1px solid var(--border-color)}
+.progress-bar-container{height:6px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden;margin-top:8px}
+.progress-bar-fill{height:100%;background:var(--gradient-primary);border-radius:3px;transition:width .5s;width:0%}
+.progress-text{font-size:.75rem;color:var(--text-muted);margin-top:4px}
+
+/* ===== MAIN CONTENT ===== */
+.main-content{margin-left:var(--sidebar-width);margin-top:var(--navbar-height);padding:40px 48px;max-width:calc(100% - var(--sidebar-width));min-height:100vh}
+.content-wrapper{max-width:900px;margin:0 auto}
+
+/* ===== HERO SECTION ===== */
+.hero{background:var(--bg-glass);border:1px solid var(--border-glass);border-radius:var(--radius-xl);padding:48px;margin-bottom:48px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;right:-20%;width:400px;height:400px;background:radial-gradient(circle,rgba(99,102,241,0.15),transparent 70%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-30%;left:-10%;width:300px;height:300px;background:radial-gradient(circle,rgba(236,72,153,0.1),transparent 70%);pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.3);color:var(--accent-blue);padding:6px 14px;border-radius:20px;font-size:.8rem;font-weight:600;margin-bottom:16px}
+.hero h1{font-size:2.5rem;font-weight:900;line-height:1.2;margin-bottom:12px;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero .subtitle{font-size:1.15rem;color:var(--text-secondary);margin-bottom:24px;max-width:600px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.hero-meta-item{display:flex;align-items:center;gap:6px;font-size:.85rem;color:var(--text-muted)}
+.hero-meta-item .icon{font-size:1.1rem}
+
+/* ===== INSTRUCTOR CARD ===== */
+.instructor-card{background:var(--bg-glass);border:1px solid var(--border-glass);border-radius:var(--radius-xl);padding:32px;margin-bottom:48px;display:flex;gap:24px;align-items:center}
+.instructor-avatar{width:80px;height:80px;border-radius:50%;background:var(--gradient-primary);display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:900;color:#fff;flex-shrink:0}
+.instructor-info h3{font-size:1.2rem;font-weight:700;margin-bottom:4px}
+.instructor-info .role{color:var(--accent-cyan);font-size:.9rem;font-weight:500;margin-bottom:8px}
+.instructor-info .bio{color:var(--text-secondary);font-size:.85rem;margin-bottom:12px}
+.instructor-tags{display:flex;flex-wrap:wrap;gap:6px}
+.instructor-tag{background:var(--bg-glass);border:1px solid var(--border-color);padding:3px 10px;border-radius:12px;font-size:.75rem;color:var(--text-secondary)}
+.instructor-link{display:inline-flex;align-items:center;gap:4px;color:var(--accent-blue);font-size:.85rem;font-weight:500}
+
+/* ===== TOPIC SECTION ===== */
+.topic-section{margin-bottom:64px;scroll-margin-top:calc(var(--navbar-height) + 20px)}
+.topic-header{margin-bottom:32px}
+.topic-number{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;background:var(--gradient-primary);border-radius:12px;font-weight:800;font-size:1.1rem;color:#fff;margin-bottom:12px}
+.topic-header h2{font-size:1.8rem;font-weight:800;margin-bottom:8px;color:#fff}
+.topic-header .topic-subtitle{color:var(--text-secondary);font-size:1rem}
+.section-block{margin-bottom:32px}
+.section-block h3{font-size:1.25rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px;color:var(--text-primary)}
+.section-block h3 .emoji{font-size:1.3rem}
+.section-block h4{font-size:1.05rem;font-weight:600;margin:16px 0 8px;color:var(--accent-cyan)}
+.section-block p,.section-block li{color:var(--text-secondary);font-size:.95rem;margin-bottom:8px}
+.section-block ul,.section-block ol{padding-left:24px}
+
+/* Arabic text */
+.arabic{font-family:var(--font-arabic);direction:rtl;text-align:right;background:rgba(139,92,246,0.06);border-right:3px solid var(--accent-purple);padding:16px 20px;border-radius:var(--radius-md);margin:12px 0;line-height:2;font-size:1rem;color:var(--text-secondary)}
+
+/* ===== CODE BLOCKS ===== */
+.code-block{position:relative;background:#0d0d22;border:1px solid var(--border-color);border-radius:var(--radius-md);margin:16px 0;overflow:hidden}
+.code-header{display:flex;align-items:center;justify-content:space-between;padding:8px 16px;background:rgba(255,255,255,0.03);border-bottom:1px solid var(--border-color);font-size:.8rem}
+.code-lang{color:var(--accent-cyan);font-weight:600}
+.code-copy{background:var(--bg-glass);border:1px solid var(--border-color);color:var(--text-secondary);padding:4px 12px;border-radius:6px;font-size:.75rem;cursor:pointer;transition:all .2s;font-family:var(--font-main)}
+.code-copy:hover{background:var(--accent-blue);color:#fff;border-color:var(--accent-blue)}
+.code-copy.copied{background:var(--accent-green);color:#fff;border-color:var(--accent-green)}
+pre{padding:16px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:.85rem;line-height:1.8;color:#c9d1d9}
+code{font-family:var(--font-mono)}
+.inline-code{background:rgba(99,102,241,0.15);color:var(--accent-blue);padding:2px 8px;border-radius:4px;font-size:.85em;font-family:var(--font-mono)}
+/* Syntax colors */
+.kw{color:#ff7b72}.str{color:#a5d6ff}.cm{color:#8b949e;font-style:italic}.fn{color:#d2a8ff}.tag{color:#7ee787}.attr{color:#79c0ff}.val{color:#a5d6ff}.num{color:#f2cc60}.op{color:#ff7b72}
+
+/* ===== CALLOUT BOXES ===== */
+.callout{border-radius:var(--radius-md);padding:16px 20px;margin:16px 0;border-left:4px solid;display:flex;gap:12px;align-items:flex-start}
+.callout-icon{font-size:1.3rem;flex-shrink:0;margin-top:2px}
+.callout-content{flex:1}
+.callout-title{font-weight:700;font-size:.9rem;margin-bottom:4px}
+.callout-body{font-size:.88rem;color:var(--text-secondary);line-height:1.6}
+.callout.info{background:rgba(6,182,212,0.08);border-color:var(--accent-cyan)}.callout.info .callout-icon,.callout.info .callout-title{color:var(--accent-cyan)}
+.callout.tip{background:rgba(16,185,129,0.08);border-color:var(--accent-green)}.callout.tip .callout-icon,.callout.tip .callout-title{color:var(--accent-green)}
+.callout.warning{background:rgba(245,158,11,0.08);border-color:var(--accent-orange)}.callout.warning .callout-icon,.callout.warning .callout-title{color:var(--accent-orange)}
+.callout.note{background:rgba(99,102,241,0.08);border-color:var(--accent-blue)}.callout.note .callout-icon,.callout.note .callout-title{color:var(--accent-blue)}
+.callout.important{background:rgba(239,68,68,0.08);border-color:var(--accent-red)}.callout.important .callout-icon,.callout.warning .callout-title{color:var(--accent-red)}
+.callout.challenge{background:rgba(139,92,246,0.08);border-color:var(--accent-purple)}.callout.challenge .callout-icon,.callout.challenge .callout-title{color:var(--accent-purple)}
+.callout.interview{background:rgba(236,72,153,0.08);border-color:var(--accent-pink)}.callout.interview .callout-icon,.callout.interview .callout-title{color:var(--accent-pink)}
+
+/* ===== CARDS ===== */
+.card{background:var(--bg-glass);border:1px solid var(--border-glass);border-radius:var(--radius-lg);padding:24px;margin:12px 0;transition:all .3s}
+.card:hover{background:var(--bg-glass-hover);transform:translateY(-2px);box-shadow:var(--shadow-glow)}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin:16px 0}
+.card-grid .card{margin:0}
+.card h4{font-size:1rem;font-weight:700;margin-bottom:8px;color:#fff}
+
+/* ===== OBJECTIVES LIST ===== */
+.objectives{list-style:none;padding:0;display:grid;gap:8px}
+.objectives li{display:flex;align-items:flex-start;gap:10px;padding:10px 16px;background:var(--bg-glass);border-radius:var(--radius-sm);font-size:.9rem;color:var(--text-secondary)}
+.objectives li::before{content:'✔';color:var(--accent-green);font-weight:700;flex-shrink:0}
+
+/* ===== ROADMAP ===== */
+.roadmap{display:flex;flex-wrap:wrap;gap:0;align-items:center;margin:20px 0;padding:20px;background:var(--bg-glass);border-radius:var(--radius-lg);border:1px solid var(--border-color)}
+.roadmap-step{display:flex;align-items:center;gap:8px;padding:10px 16px;background:rgba(99,102,241,0.1);border-radius:var(--radius-md);font-size:.85rem;font-weight:500;color:var(--accent-blue)}
+.roadmap-arrow{color:var(--text-muted);font-size:1.2rem;margin:0 4px}
+
+/* ===== QUIZ ===== */
+.quiz{background:var(--bg-glass);border:1px solid var(--border-glass);border-radius:var(--radius-lg);padding:24px;margin:16px 0}
+.quiz-question{padding:12px 0;border-bottom:1px solid var(--border-color)}
+.quiz-question:last-child{border:none}
+.quiz-q{font-weight:600;margin-bottom:8px;color:#fff;font-size:.95rem}
+.quiz-options{display:grid;gap:6px;padding-left:8px}
+.quiz-option{padding:8px 14px;border-radius:var(--radius-sm);font-size:.88rem;cursor:pointer;transition:all .2s;color:var(--text-secondary);background:var(--bg-card)}
+.quiz-option:hover{background:var(--bg-glass-hover)}
+.quiz-option.correct{background:rgba(16,185,129,0.15);color:var(--accent-green);border:1px solid rgba(16,185,129,0.3)}
+.quiz-option.wrong{background:rgba(239,68,68,0.15);color:var(--accent-red);border:1px solid rgba(239,68,68,0.3)}
+.quiz-answer{display:none;padding:8px 14px;margin-top:6px;background:rgba(16,185,129,0.08);border-radius:var(--radius-sm);font-size:.85rem;color:var(--accent-green)}
+
+/* ===== COLLAPSIBLE ===== */
+.collapsible{margin:12px 0}
+.collapsible-header{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:var(--bg-glass);border:1px solid var(--border-glass);border-radius:var(--radius-md);cursor:pointer;font-weight:600;font-size:.95rem;transition:all .3s;color:#fff}
+.collapsible-header:hover{background:var(--bg-glass-hover)}
+.collapsible-header .arrow{transition:transform .3s;font-size:.8rem}
+.collapsible.open .collapsible-header .arrow{transform:rotate(180deg)}
+.collapsible-body{max-height:0;overflow:hidden;transition:max-height .4s ease;padding:0 20px}
+.collapsible.open .collapsible-body{max-height:5000px;padding:16px 20px}
+
+/* ===== TABLE ===== */
+.table-wrapper{overflow-x:auto;margin:16px 0;border-radius:var(--radius-md);border:1px solid var(--border-color)}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th{background:rgba(99,102,241,0.1);padding:12px 16px;text-align:left;font-weight:600;color:var(--accent-blue);border-bottom:1px solid var(--border-color)}
+td{padding:10px 16px;border-bottom:1px solid var(--border-color);color:var(--text-secondary)}
+tr:hover td{background:var(--bg-glass)}
+
+/* ===== TIMELINE ===== */
+.timeline{position:relative;padding-left:32px;margin:20px 0}
+.timeline::before{content:'';position:absolute;left:12px;top:0;bottom:0;width:2px;background:var(--gradient-primary)}
+.timeline-item{position:relative;margin-bottom:24px}
+.timeline-item::before{content:'';position:absolute;left:-26px;top:6px;width:12px;height:12px;background:var(--accent-blue);border-radius:50%;border:2px solid var(--bg-primary)}
+.timeline-item h4{font-size:1rem;font-weight:700;color:var(--accent-cyan);margin-bottom:4px}
+.timeline-item p{font-size:.88rem;color:var(--text-secondary)}
+
+/* ===== DIAGRAM ===== */
+.diagram{background:var(--bg-glass);border:1px solid var(--border-glass);border-radius:var(--radius-lg);padding:24px;margin:16px 0;text-align:center;font-family:var(--font-mono);font-size:.85rem;line-height:1.6;color:var(--accent-cyan);overflow-x:auto;white-space:pre}
+
+/* ===== BADGES ===== */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:12px;font-size:.75rem;font-weight:600}
+.badge-blue{background:rgba(99,102,241,0.15);color:var(--accent-blue)}
+.badge-green{background:rgba(16,185,129,0.15);color:var(--accent-green)}
+.badge-purple{background:rgba(139,92,246,0.15);color:var(--accent-purple)}
+.badge-orange{background:rgba(245,158,11,0.15);color:var(--accent-orange)}
+
+/* ===== KEY SHORTCUTS ===== */
+.shortcut{display:inline-flex;align-items:center;gap:4px}
+kbd{background:var(--bg-glass);border:1px solid var(--border-color);border-bottom-width:2px;border-radius:6px;padding:2px 8px;font-family:var(--font-mono);font-size:.8rem;color:var(--text-primary);white-space:nowrap}
+
+/* ===== MIND MAP ===== */
+.mind-map{background:var(--bg-glass);border:1px solid var(--border-glass);border-radius:var(--radius-xl);padding:32px;margin:16px 0;text-align:center}
+.mind-map-center{display:inline-block;background:var(--gradient-primary);color:#fff;padding:12px 24px;border-radius:var(--radius-lg);font-weight:700;font-size:1.1rem;margin-bottom:20px}
+.mind-map-branches{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.mind-map-branch{background:var(--bg-card);border:1px solid var(--border-color);padding:8px 16px;border-radius:var(--radius-md);font-size:.85rem;color:var(--text-secondary)}
+
+/* ===== CHEAT SHEET ===== */
+.cheat-sheet{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin:16px 0}
+.cheat-item{background:var(--bg-glass);border:1px solid var(--border-glass);border-radius:var(--radius-md);padding:16px}
+.cheat-item h5{color:var(--accent-cyan);font-size:.85rem;margin-bottom:6px}
+.cheat-item code{display:block;font-size:.8rem;color:var(--accent-green);margin:4px 0}
+
+/* ===== TRUE/FALSE ===== */
+.tf-grid{display:grid;grid-template-columns:1fr;gap:8px;margin:16px 0}
+.tf-item{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;background:var(--bg-glass);border-radius:var(--radius-sm);font-size:.9rem}
+.tf-badge{flex-shrink:0;padding:2px 10px;border-radius:8px;font-size:.75rem;font-weight:700}
+.tf-true{background:rgba(16,185,129,0.15);color:var(--accent-green)}
+.tf-false{background:rgba(239,68,68,0.15);color:var(--accent-red)}
+
+/* ===== FOOTER ===== */
+.footer{margin-top:80px;padding:40px;text-align:center;border-top:1px solid var(--border-color);color:var(--text-muted);font-size:.85rem}
+
+/* ===== TOC (Table of Contents within page) ===== */
+.toc-box{background:var(--bg-glass);border:1px solid var(--border-glass);border-radius:var(--radius-lg);padding:24px;margin-bottom:40px}
+.toc-box h3{font-size:1rem;font-weight:700;margin-bottom:12px;color:#fff}
+.toc-list{list-style:none;padding:0;display:grid;gap:4px}
+.toc-list li a{color:var(--text-secondary);font-size:.85rem;padding:4px 0;display:block;transition:all .2s}
+.toc-list li a:hover{color:var(--accent-blue);text-decoration:none;padding-left:8px}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:1024px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .main-content{margin-left:0;max-width:100%;padding:24px}
+  .hamburger{display:block}
+}
+@media(max-width:768px){
+  .hero h1{font-size:1.8rem}
+  .hero{padding:28px}
+  .instructor-card{flex-direction:column;text-align:center}
+  .card-grid{grid-template-columns:1fr}
+  .roadmap{flex-direction:column}
+  .roadmap-arrow{transform:rotate(90deg)}
+  .navbar-search{width:160px}
+  .cheat-sheet{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+  .main-content{padding:16px}
+  .hero h1{font-size:1.5rem}
+  .topic-header h2{font-size:1.4rem}
+  .navbar-brand span{font-size:.9rem}
+}
+
+/* ===== PRINT ===== */
+@media print{
+  .navbar,.sidebar,.hamburger,.code-copy,.toc-box{display:none!important}
+  .main-content{margin:0;max-width:100%;padding:20px}
+  body{background:#fff;color:#000}
+  .hero,.card,.callout,.code-block,.quiz,.collapsible-header{border:1px solid #ccc;background:#f9f9f9!important;break-inside:avoid}
+  pre{color:#000}
+  a{color:#0066cc}
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.animate-in{animation:fadeInUp .6s ease forwards;opacity:0}
+.delay-1{animation-delay:.1s}.delay-2{animation-delay:.2s}.delay-3{animation-delay:.3s}
+</style>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar">
+  <button class="hamburger" onclick="toggleSidebar()" aria-label="Toggle menu">&#9776;</button>
+  <div class="navbar-brand">
+    <div class="logo">W</div>
+    <span>Web Design Bootcamp</span>
+  </div>
+  <div class="navbar-center">
+    <input type="text" class="navbar-search" placeholder="Search documentation..." id="searchInput" onkeyup="filterTopics()">
+  </div>
+  <div class="navbar-right">
+    <span class="nav-badge">Session 1 / 15</span>
+  </div>
+</nav>
+
+<!-- ===== SIDEBAR ===== -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-progress">
+    <div style="font-size:.85rem;font-weight:600;color:#fff">Session Progress</div>
+    <div class="progress-bar-container"><div class="progress-bar-fill" id="progressBar"></div></div>
+    <div class="progress-text" id="progressText">0% Complete</div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-title">Getting Started</div>
+    <a class="sidebar-link" href="#hero"><span class="icon">&#127968;</span> Overview</a>
+    <a class="sidebar-link" href="#instructor"><span class="icon">&#128104;&#8205;&#127979;</span> Instructor</a>
+    <a class="sidebar-link" href="#objectives"><span class="icon">&#127919;</span> Objectives</a>
+    <a class="sidebar-link" href="#roadmap-section"><span class="icon">&#128506;</span> Roadmap</a>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-title">Topics</div>
+    <a class="sidebar-link" href="#topic1"><span class="icon">&#127760;</span> What is the Internet?</a>
+    <a class="sidebar-link" href="#topic2"><span class="icon">&#128421;</span> How Browsers Work</a>
+    <a class="sidebar-link" href="#topic3"><span class="icon">&#128640;</span> Web Design Evolution</a>
+    <a class="sidebar-link" href="#topic4"><span class="icon">&#127912;</span> Modern Design Principles</a>
+    <a class="sidebar-link" href="#topic5"><span class="icon">&#128295;</span> Designer Tools</a>
+    <a class="sidebar-link" href="#topic6"><span class="icon">&#128270;</span> DevTools Overview</a>
+    <a class="sidebar-link" href="#topic7"><span class="icon">&#128196;</span> What is HTML?</a>
+    <a class="sidebar-link" href="#topic8"><span class="icon">&#127991;</span> Essential Tags</a>
+    <a class="sidebar-link" href="#topic9"><span class="icon">&#128221;</span> Lists & Structure</a>
+    <a class="sidebar-link" href="#topic10"><span class="icon">&#9889;</span> Emmet Basics</a>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-title">Practice</div>
+    <a class="sidebar-link" href="#project"><span class="icon">&#128187;</span> Hands-On Project</a>
+    <a class="sidebar-link" href="#interview"><span class="icon">&#127891;</span> Interview Questions</a>
+    <a class="sidebar-link" href="#mcq"><span class="icon">&#9989;</span> MCQ Quiz</a>
+    <a class="sidebar-link" href="#challenges"><span class="icon">&#127942;</span> Coding Challenges</a>
+    <a class="sidebar-link" href="#cheatsheet"><span class="icon">&#128196;</span> Cheat Sheet</a>
+    <a class="sidebar-link" href="#summary"><span class="icon">&#128214;</span> Summary</a>
+  </div>
+</aside>
+
+<!-- ===== MAIN CONTENT ===== -->
+<main class="main-content">
+<div class="content-wrapper">
+
+<!-- HERO -->
+<section class="hero animate-in" id="hero">
+  <div class="hero-badge">&#128218; Module 1 &middot; Session 1 of 15</div>
+  <h1>Introduction to Web + HTML Basics</h1>
+  <p class="subtitle">Your complete guide to understanding how the web works and building your first HTML page from scratch. No prior experience needed.</p>
+  <div class="hero-meta">
+    <div class="hero-meta-item"><span class="icon">&#9202;</span> 6 Hours</div>
+    <div class="hero-meta-item"><span class="icon">&#128218;</span> 10 Topics</div>
+    <div class="hero-meta-item"><span class="icon">&#128187;</span> Hands-On Project</div>
+    <div class="hero-meta-item"><span class="icon">&#127942;</span> Beginner Friendly</div>
+  </div>
+</section>
+
+<!-- INSTRUCTOR -->
+<section class="instructor-card animate-in delay-1" id="instructor">
+  <div class="instructor-avatar">YE</div>
+  <div class="instructor-info">
+    <h3>Yousef Eldbah</h3>
+    <div class="role">Full Stack Dev (React & .NET) @ Dimensions IT</div>
+    <div class="bio">MERN Freelancer &middot; Instructor @ NTI &middot; Co-Founder @ MindLoop Academy &middot; ITI Graduate</div>
+    <div class="instructor-tags">
+      <span class="instructor-tag">HTML/CSS</span>
+      <span class="instructor-tag">JavaScript</span>
+      <span class="instructor-tag">React</span>
+      <span class="instructor-tag">.NET</span>
+      <span class="instructor-tag">MERN</span>
+    </div>
+    <a href="https://www.linkedin.com/in/yousef-eldbah/" target="_blank" class="instructor-link" style="margin-top:8px">LinkedIn Profile &#8599;</a>
+  </div>
+</section>
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc-box animate-in delay-2" id="toc">
+  <h3>&#128203; Table of Contents</h3>
+  <ol class="toc-list">
+    <li><a href="#topic1">1. What is the Internet?</a></li>
+    <li><a href="#topic2">2. How Browsers Work</a></li>
+    <li><a href="#topic3">3. Web Design Evolution</a></li>
+    <li><a href="#topic4">4. Modern Design Principles</a></li>
+    <li><a href="#topic5">5. Designer Tools (VS Code)</a></li>
+    <li><a href="#topic6">6. DevTools Overview</a></li>
+    <li><a href="#topic7">7. What is HTML?</a></li>
+    <li><a href="#topic8">8. Essential Tags</a></li>
+    <li><a href="#topic9">9. Lists & Content Structure</a></li>
+    <li><a href="#topic10">10. Emmet Basics</a></li>
+    <li><a href="#project">Hands-On Project</a></li>
+    <li><a href="#interview">Interview Questions</a></li>
+    <li><a href="#mcq">MCQ & True/False</a></li>
+    <li><a href="#challenges">Coding Challenges</a></li>
+    <li><a href="#cheatsheet">Cheat Sheet & Summary</a></li>
+  </ol>
+</div>
+
+<!-- GLOBAL OBJECTIVES -->
+<section class="section-block animate-in delay-3" id="objectives">
+  <h3><span class="emoji">&#127919;</span> Session Learning Objectives</h3>
+  <ul class="objectives">
+    <li>Understand how the Internet works (Client-Server model)</li>
+    <li>Explain how browsers render web pages (Request/Response cycle)</li>
+    <li>Trace the evolution of web design from Web 1.0 to modern web</li>
+    <li>Apply modern design principles (simplicity, hierarchy, consistency)</li>
+    <li>Set up your development environment with VS Code and essential extensions</li>
+    <li>Use Chrome DevTools to inspect and debug web pages</li>
+    <li>Write well-structured HTML pages with proper semantics</li>
+    <li>Use headings, paragraphs, links, images, and lists correctly</li>
+    <li>Speed up HTML writing with Emmet abbreviations</li>
+    <li>Build a complete personal bio page from scratch</li>
+  </ul>
+</section>
+
+<!-- ROADMAP -->
+<section class="section-block" id="roadmap-section">
+  <h3><span class="emoji">&#128506;</span> Session Roadmap</h3>
+  <div class="roadmap">
+    <div class="roadmap-step">&#127760; Internet Basics</div>
+    <span class="roadmap-arrow">&#10132;</span>
+    <div class="roadmap-step">&#128421; Browsers</div>
+    <span class="roadmap-arrow">&#10132;</span>
+    <div class="roadmap-step">&#128640; Web Evolution</div>
+    <span class="roadmap-arrow">&#10132;</span>
+    <div class="roadmap-step">&#127912; Design</div>
+    <span class="roadmap-arrow">&#10132;</span>
+    <div class="roadmap-step">&#128295; Tools</div>
+    <span class="roadmap-arrow">&#10132;</span>
+    <div class="roadmap-step">&#128270; DevTools</div>
+    <span class="roadmap-arrow">&#10132;</span>
+    <div class="roadmap-step">&#128196; HTML</div>
+    <span class="roadmap-arrow">&#10132;</span>
+    <div class="roadmap-step">&#127991; Tags</div>
+    <span class="roadmap-arrow">&#10132;</span>
+    <div class="roadmap-step">&#128221; Lists</div>
+    <span class="roadmap-arrow">&#10132;</span>
+    <div class="roadmap-step">&#9889; Emmet</div>
+    <span class="roadmap-arrow">&#10132;</span>
+    <div class="roadmap-step">&#128187; Project</div>
+  </div>
+</section>
+
+<!-- WARM UP QUIZ -->
+<section class="section-block" id="warmup">
+  <h3><span class="emoji">&#129504;</span> Warm-Up Quiz (Before We Start)</h3>
+  <p>Test your current knowledge — don't worry if you don't know the answers yet!</p>
+  <div class="quiz">
+    <div class="quiz-question">
+      <div class="quiz-q">1. What does HTML stand for?</div>
+      <div class="quiz-options">
+        <div class="quiz-option" onclick="checkAnswer(this,false)">High Tech Modern Language</div>
+        <div class="quiz-option" onclick="checkAnswer(this,true)">HyperText Markup Language</div>
+        <div class="quiz-option" onclick="checkAnswer(this,false)">Home Tool Markup Language</div>
+        <div class="quiz-option" onclick="checkAnswer(this,false)">Hyper Transfer Markup Language</div>
+      </div>
+    </div>
+    <div class="quiz-question">
+      <div class="quiz-q">2. When you type "google.com" in your browser, what happens?</div>
+      <div class="quiz-options">
+        <div class="quiz-option" onclick="checkAnswer(this,false)">The website is already stored on your computer</div>
+        <div class="quiz-option" onclick="checkAnswer(this,true)">Your browser sends a request to a server and receives a response</div>
+        <div class="quiz-option" onclick="checkAnswer(this,false)">Google sends the website through email</div>
+        <div class="quiz-option" onclick="checkAnswer(this,false)">Your internet provider creates the page</div>
+      </div>
+    </div>
+    <div class="quiz-question">
+      <div class="quiz-q">3. What is the role of a web browser?</div>
+      <div class="quiz-options">
+        <div class="quiz-option" onclick="checkAnswer(this,false)">To write code</div>
+        <div class="quiz-option" onclick="checkAnswer(this,false)">To design images</div>
+        <div class="quiz-option" onclick="checkAnswer(this,true)">To read HTML/CSS/JS and display it as a visual page</div>
+        <div class="quiz-option" onclick="checkAnswer(this,false)">To connect to WiFi</div>
+      </div>
+    </div>
+    <div class="quiz-question">
+      <div class="quiz-q">4. Which tag is used for the biggest heading in HTML?</div>
+      <div class="quiz-options">
+        <div class="quiz-option" onclick="checkAnswer(this,false)">&lt;heading&gt;</div>
+        <div class="quiz-option" onclick="checkAnswer(this,false)">&lt;h6&gt;</div>
+        <div class="quiz-option" onclick="checkAnswer(this,true)">&lt;h1&gt;</div>
+        <div class="quiz-option" onclick="checkAnswer(this,false)">&lt;head&gt;</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- TOPIC 1: WHAT IS THE INTERNET? -->
+<!-- ============================================================ -->
+<section class="topic-section" id="topic1">
+  <div class="topic-header">
+    <div class="topic-number">1</div>
+    <h2>What is the Internet?</h2>
+    <p class="topic-subtitle">&#1575;&#1604;&#1601;&#1585;&#1602; &#1576;&#1610;&#1606; Client &#1608; Server &#1608;&#1575;&#1586;&#1575;&#1610; &#1575;&#1604;&#1573;&#1606;&#1578;&#1585;&#1606;&#1578; &#1576;&#1578;&#1582;&#1589;&#1610;&#1589;</p>
+  </div>
+
+  <!-- Introduction -->
+  <div class="section-block">
+    <h3><span class="emoji">&#128218;</span> Introduction</h3>
+    <p>Before we write a single line of code, we need to understand the most important question: <strong>How does the internet actually work?</strong></p>
+    <p>Every time you open a website, send an email, or watch a YouTube video, a complex system works behind the scenes. As a web developer, you <em>must</em> understand this system — it's the foundation of everything you'll build.</p>
+    <p><strong>Why do companies care?</strong> Companies like Google, Amazon, and Netflix serve millions of users. Understanding client-server architecture helps you build faster, more reliable applications.</p>
+    <p><strong>Why do freelancers need this?</strong> When a client says "my website is slow," you need to know if the problem is on the client side, the server side, or the network — so you can fix it and get paid.</p>
+    <div class="arabic">
+      <strong>&#1575;&#1604;&#1605;&#1602;&#1583;&#1605;&#1577;:</strong><br>
+      قبل ما نكتب أي كود، لازم نفهم أهم سؤال: إزاي الإنترنت بيشتغل فعلاً؟<br>
+      كل مرة بتفتح موقع أو بتبعت إيميل أو بتتفرج على فيديو، فيه نظام معقد بيشتغل ورا الكواليس.<br>
+      كـ Web Developer، لازم تفهم النظام ده — لأنه الأساس اللي هتبني عليه كل حاجة.<br>
+      <strong>ليه الشركات بتهتم؟</strong> شركات زي جوجل وأمازون ونتفليكس بتخدم ملايين المستخدمين. فهم架构 Client-Server بيساعدك تبني تطبيقات أسرع وأوثق.<br>
+      <strong>ليه الفريلانسر محتاج ده؟</strong> لما العميل يقولك "الموقع بطيء"، لازم تعرف المشكلة من.Client ولا Server ولا الشبكة — عشان تصلحها وتقبض فلوسك.
+    </div>
+  </div>
+
+  <!-- Real World Scenario -->
+  <div class="section-block">
+    <h3><span class="emoji">&#127758;</span> Real-World Scenario</h3>
+    <div class="card">
+      <h4>&#128722; Amazon Example</h4>
+      <p>When you visit Amazon.com:</p>
+      <ol>
+        <li><strong>You (Client)</strong> open your browser and type "amazon.com"</li>
+        <li>Your browser sends a <strong>request</strong> through the internet</li>
+        <li>The request reaches Amazon's <strong>server</strong> (a powerful computer in a data center)</li>
+        <li>The server processes the request, finds the homepage data</li>
+        <li>The server sends back a <strong>response</strong> (HTML, CSS, JavaScript files)</li>
+        <li>Your browser <strong>renders</strong> (draws) the page on your screen</li>
+      </ol>
+      <p>This entire process happens in <strong>milliseconds!</strong></p>
+    </div>
+    <div class="arabic">
+      <strong>مثال من الواقع:</strong><br>
+      لما بتفتح أمازون: إنت (الـ Client) بتكتب amazon.com في المتصفح &#8594; المتصفح بيبعت Request &#8594; الطلب بيوصل لسيرفر أمازون &#8594; السيرفر بيرجع Response فيه HTML و CSS و JS &#8594; المتصفح بيعرض الصفحة.<br>
+      العملية دي كلها بتحصل في أجزاء من الثانية!
+    </div>
+  </div>
+
+  <!-- Think Like Developer -->
+  <div class="section-block">
+    <h3><span class="emoji">&#129504;</span> Think Like a Developer</h3>
+    <div class="callout tip">
+      <span class="callout-icon">&#127860;</span>
+      <div class="callout-content">
+        <div class="callout-title">Restaurant Analogy</div>
+        <div class="callout-body">
+          <p>Think of the internet like a <strong>restaurant</strong>:</p>
+          <ul>
+            <li><strong>You (Client)</strong> = The customer sitting at a table</li>
+            <li><strong>The Waiter</strong> = The Internet (carries your order to the kitchen)</li>
+            <li><strong>The Kitchen (Server)</strong> = Prepares your food (the website)</li>
+            <li><strong>The Food (Response)</strong> = The HTML/CSS/JS that comes back to you</li>
+          </ul>
+          <p>You don't go to the kitchen yourself — you send a request through the waiter. Similarly, your browser doesn't directly access the server — it sends a request through the internet.</p>
+        </div>
+      </div>
+    </div>
+    <div class="arabic">
+      <strong>فكر زي المطور:</strong><br>
+      تخيل الإنترنت زي المطعم:<br>
+      إنت (العميل) = الـ Client<br>
+      الجرسون = الإنترنت (بياخد الطلب ويودّيه المطبخ)<br>
+      المطبخ = الـ Server (بيحضّر الأكل = الموقع)<br>
+      الأكل = الـ Response (HTML/CSS/JS اللي بيرجعلك)<br>
+      إنت مش بتروح المطبخ بنفسك — بتبعت طلب عن طريق الجرسون. بالظبط كده المتصفح مش بيروح للسيرفر مباشرة — بيبعت Request عبر الإنترنت.
+    </div>
+  </div>
+
+  <!-- Visual Diagram -->
+  <div class="section-block">
+    <h3><span class="emoji">&#128202;</span> Visual Diagram</h3>
+    <div class="diagram">
+&#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+&#9474;                      CLIENT-SERVER MODEL                      &#9474;
+&#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+  &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;       REQUEST        &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+  &#9474;                    &#9474;  &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9654;  &#9474;                    &#9474;
+  &#9474;   CLIENT (You)     &#9474;                 &#9474;   SERVER (Amazon)  &#9474;
+  &#9474;   Browser, Phone   &#9474;  &#9664;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;  &#9474;   Data Center      &#9474;
+  &#9474;                    &#9474;      RESPONSE     &#9474;                    &#9474;
+  &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;                 &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+  Client = Any device that REQUESTS information
+  Server = A computer that RESPONDS with information
+  Internet = The network connecting them
+    </div>
+  </div>
+
+  <!-- Key Concepts Table -->
+  <div class="section-block">
+    <h3><span class="emoji">&#128200;</span> Key Concepts</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Concept</th><th>English</th><th>Arabic</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Client</strong></td><td>The device/browser that requests a web page</td><td>&#1575;&#1604;&#1580;&#1607;&#1575;&#1586; &#1575;&#1604;&#1604;&#1610; &#1576;&#1610;&#1591;&#1604;&#1576; &#1575;&#1604;&#1589;&#1601;&#1581;&#1577;</td></tr>
+          <tr><td><strong>Server</strong></td><td>A computer that stores and serves web pages</td><td>&#1580;&#1607;&#1575;&#1586; &#1603;&#1605;&#1576;&#1610;&#1608;&#1578;&#1585; &#1576;&#1610;&#1582;&#1586;&#1606; &#1608;&#1576;&#1610;&#1576;&#1593;&#1578; &#1575;&#1604;&#1589;&#1601;&#1581;&#1575;&#1578;</td></tr>
+          <tr><td><strong>Request</strong></td><td>A message sent from client to server asking for data</td><td>&#1585;&#1587;&#1575;&#1604;&#1577; &#1605;&#1606; &#1575;&#1604;&#1603;&#1604;&#1610;&#1606;&#1578; &#1604;&#1604;&#1587;&#1610;&#1585;&#1601;&#1585; &#1576;&#1578;&#1591;&#1604;&#1576; &#1576;&#1610;&#1575;&#1606;&#1575;&#1578;</td></tr>
+          <tr><td><strong>Response</strong></td><td>The data sent back from server to client</td><td>&#1575;&#1604;&#1576;&#1610;&#1575;&#1606;&#1575;&#1578; &#1575;&#1604;&#1604;&#1610; &#1575;&#1604;&#1587;&#1610;&#1585;&#1601;&#1585; &#1576;&#1610;&#1585;&#1580;&#1593;&#1607;&#1575;</td></tr>
+          <tr><td><strong>IP Address</strong></td><td>A unique address for every device on the internet</td><td>&#1593;&#1606;&#1608;&#1575;&#1606; &#1601;&#1585;&#1610;&#1583; &#1604;&#1603;&#1604; &#1580;&#1607;&#1575;&#1586; &#1593;&#1604;&#1609; &#1575;&#1604;&#1573;&#1606;&#1578;&#1585;&#1606;&#1578;</td></tr>
+          <tr><td><strong>DNS</strong></td><td>Domain Name System — translates domain names to IP addresses</td><td>&#1606;&#1592;&#1575;&#1605; &#1576;&#1610;&#1581;&#1608;&#1604; &#1571;&#1587;&#1605;&#1575;&#1569; &#1575;&#1604;&#1605;&#1608;&#1575;&#1602;&#1593; &#1604;&#1593;&#1606;&#1575;&#1608;&#1610;&#1606; IP</td></tr>
+          <tr><td><strong>HTTP/HTTPS</strong></td><td>The protocol used for communication on the web</td><td>&#1575;&#1604;&#1576;&#1585;&#1608;&#1578;&#1608;&#1603;&#1608;&#1604; &#1575;&#1604;&#1604;&#1610; &#1576;&#1610;&#1606;&#1592;&#1605; &#1575;&#1604;&#1575;&#1578;&#1589;&#1575;&#1604; &#1593;&#1604;&#1609; &#1575;&#1604;&#1608;&#1575;&#1576;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Best Practices -->
+  <div class="section-block">
+    <h3><span class="emoji">&#128161;</span> Best Practices</h3>
+    <div class="callout info">
+      <span class="callout-icon">&#9432;</span>
+      <div class="callout-content">
+        <div class="callout-title">Always Use HTTPS</div>
+        <div class="callout-body">HTTPS encrypts data between client and server. Never build a website without HTTPS — it's essential for security and SEO.</div>
+      </div>
+    </div>
+    <div class="callout tip">
+      <span class="callout-icon">&#128161;</span>
+      <div class="callout-content">
+        <div class="callout-title">Understand Status Codes</div>
+        <div class="callout-body">
+          <strong>200</strong> = OK (success) &middot; <strong>301</strong> = Redirect &middot; <strong>404</strong> = Not Found &middot; <strong>500</strong> = Server Error<br>
+          When debugging, always check the HTTP status code first!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Common Mistakes -->
+  <div class="section-block">
+    <h3><span class="emoji">&#9888;</span> Common Mistakes</h3>
+    <div class="callout warning">
+      <span class="callout-icon">&#9888;</span>
+      <div class="callout-content">
+        <div class="callout-title">Confusing Internet with the Web</div>
+        <div class="callout-body">The <strong>Internet</strong> is the physical network of connected computers. The <strong>Web</strong> (World Wide Web) is a service that runs ON the internet. Email, FTP, and streaming also use the internet but aren't "the web."</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- TOPIC 2: HOW BROWSERS WORK -->
+<!-- ============================================================ -->
+<section class="topic-section" id="topic2">
+  <div class="topic-header">
+    <div class="topic-number">2</div>
+    <h2>How Browsers Work</h2>
+    <p class="topic-subtitle">&#1573;&#1586;&#1575;&#1610; &#1575;&#1604;&#1605;&#1578;&#1589;&#1601;&#1581; &#1576;&#1610;&#1602;&#1585;&#1575; &#1575;&#1604;&#1589;&#1601;&#1581;&#1577; — Request/Response</p>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128218;</span> Introduction</h3>
+    <p>A web browser is a software application that retrieves, interprets, and displays content from web servers. Chrome, Firefox, Safari, and Edge are all browsers. As a web developer, understanding how browsers work gives you a massive advantage in debugging and performance optimization.</p>
+    <div class="arabic">
+      <strong>&#1575;&#1604;&#1605;&#1602;&#1583;&#1605;&#1577;:</strong><br>
+      المتصفح هو برنامج بيجيب ويفسر ويعرض المحتوى من السيرفرات. كروم، فايرفوكس، سفاري، وإيدج كلهم متصفحات.<br>
+      كـ Web Developer، فهم إزاي المتصفح بيشتغل بيديك ميزة كبيرة جداً في الـ debugging وتحسين الأداء.
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#127758;</span> Real-World Scenario</h3>
+    <div class="card">
+      <h4>&#127760; Google Search Example</h4>
+      <p>When you type "google.com" and press Enter, here's what happens step by step:</p>
+      <div class="timeline">
+        <div class="timeline-item"><h4>Step 1: DNS Lookup</h4><p>Browser asks DNS server: "What is the IP address of google.com?" DNS responds: "142.250.80.46"</p></div>
+        <div class="timeline-item"><h4>Step 2: TCP Connection</h4><p>Browser establishes a connection with the server at that IP address (handshake)</p></div>
+        <div class="timeline-item"><h4>Step 3: HTTP Request</h4><p>Browser sends: "GET / HTTP/1.1" — asking for the homepage</p></div>
+        <div class="timeline-item"><h4>Step 4: Server Response</h4><p>Server sends back: Status 200 OK + HTML + CSS + JavaScript files</p></div>
+        <div class="timeline-item"><h4>Step 5: Rendering</h4><p>Browser parses HTML &#8594; builds DOM tree &#8594; applies CSS &#8594; executes JS &#8594; paints the page</p></div>
+      </div>
+    </div>
+    <div class="arabic">
+      <strong>مثال من الواقع:</strong><br>
+      لما بتكتب google.com وتضغط Enter:<br>
+      1. المتصفح بيسأل DNS: "إيه عنوان IP بتاع google.com؟"<br>
+      2. بيعمل اتصال TCP مع السيرفر<br>
+      3. بيبعت HTTP Request: "GET /" (عايز الصفحة الرئيسية)<br>
+      4. السيرفر بيرجع HTML و CSS و JS<br>
+      5. المتصفح بيترجم HTML &#8594; بيعمل DOM &#8594; بيضيف CSS &#8594; بينفذ JS &#8594; بيعرض الصفحة
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128202;</span> Visual Diagram — Browser Rendering Pipeline</h3>
+    <div class="diagram">
+HTML File  &#8594;  Parser  &#8594;  DOM Tree  &#8594;  Render Tree  &#8594;  Layout  &#8594;  Paint
+   &#8593;
+CSS File   &#8594;  CSSOM   &#8594;     (Combined with DOM)
+
+JavaScript &#8594;  Can modify DOM & CSSOM at any time
+
+DOM = Document Object Model (structure of your page)
+CSSOM = CSS Object Model (all styles applied)
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128161;</span> Key Vocabulary</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Term</th><th>Meaning</th><th>&#1576;&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;</th></tr></thead>
+        <tbody>
+          <tr><td><strong>DNS</strong></td><td>Phone book of the internet — converts names to IPs</td><td>&#1583;&#1604;&#1610;&#1604; &#1575;&#1604;&#1573;&#1606;&#1578;&#1585;&#1606;&#1578;</td></tr>
+          <tr><td><strong>DOM</strong></td><td>A tree-like representation of your HTML</td><td>&#1588;&#1580;&#1585;&#1577; &#1575;&#1604;&#1600; HTML</td></tr>
+          <tr><td><strong>HTTP</strong></td><td>Protocol for transferring web pages</td><td>&#1576;&#1585;&#1608;&#1578;&#1608;&#1603;&#1608;&#1604; &#1606;&#1602;&#1604; &#1575;&#1604;&#1589;&#1601;&#1581;&#1575;&#1578;</td></tr>
+          <tr><td><strong>URL</strong></td><td>Uniform Resource Locator — a web address</td><td>&#1593;&#1606;&#1608;&#1575;&#1606; &#1575;&#1604;&#1605;&#1608;&#1602;&#1593;</td></tr>
+          <tr><td><strong>Rendering</strong></td><td>The process of displaying the page visually</td><td>&#1593;&#1585;&#1590; &#1575;&#1604;&#1589;&#1601;&#1581;&#1577; &#1576;&#1588;&#1603;&#1604; &#1605;&#1585;&#1574;&#1610;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128161;</span> Best Practices</h3>
+    <div class="callout tip">
+      <span class="callout-icon">&#128161;</span>
+      <div class="callout-content">
+        <div class="callout-title">Optimize Loading Order</div>
+        <div class="callout-body">Put CSS in the <span class="inline-code">&lt;head&gt;</span> so styles load first. Put JavaScript before <span class="inline-code">&lt;/body&gt;</span> so it doesn't block rendering. This makes your page appear faster.</div>
+      </div>
+    </div>
+    <div class="callout warning">
+      <span class="callout-icon">&#9888;</span>
+      <div class="callout-content">
+        <div class="callout-title">Don't Block Rendering</div>
+        <div class="callout-body">Large JavaScript files in the <span class="inline-code">&lt;head&gt;</span> without <span class="inline-code">defer</span> or <span class="inline-code">async</span> will make your page appear blank while loading. Always defer non-critical scripts!</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128270;</span> Debugging Tip</h3>
+    <div class="callout info">
+      <span class="callout-icon">&#128270;</span>
+      <div class="callout-content">
+        <div class="callout-title">Use the Network Tab</div>
+        <div class="callout-body">Open DevTools (<kbd>F12</kbd>) &#8594; Network tab &#8594; refresh the page. You'll see every request the browser makes, how long each takes, and the response status. This is the #1 tool for debugging loading issues.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- TOPIC 3: WEB DESIGN EVOLUTION -->
+<!-- ============================================================ -->
+<section class="topic-section" id="topic3">
+  <div class="topic-header">
+    <div class="topic-number">3</div>
+    <h2>Web Design Evolution</h2>
+    <p class="topic-subtitle">&#1605;&#1606; Web 1.0 &#1604;&#1581;&#1583; Modern Web</p>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128218;</span> Introduction</h3>
+    <p>The web has transformed dramatically since its invention in 1991 by Tim Berners-Lee. Understanding this evolution helps you appreciate modern tools and make better design decisions. Companies that understand web trends stay ahead of competitors.</p>
+    <div class="arabic">
+      <strong>&#1575;&#1604;&#1605;&#1602;&#1583;&#1605;&#1577;:</strong><br>
+      الواب اتغير كتير من وقت اختراعه سنة 1991 على يد Tim Berners-Lee.<br>
+      فهم التطور ده بيساعدك تقدر الأدوات الحديثة وتاخد قرارات تصميم أحسن.<br>
+      الشركات اللي بتفهم ترندات الويب بتتقدم على المنافسين.
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128202;</span> Timeline of Web Evolution</h3>
+    <div class="timeline">
+      <div class="timeline-item">
+        <h4>Web 1.0 (1991-2004) — The Static Web</h4>
+        <p>Simple HTML pages. No interactivity. Read-only. Like a digital newspaper. Think: the first Amazon page (1995).</p>
+      </div>
+      <div class="timeline-item">
+        <h4>Web 2.0 (2004-2020) — The Social Web</h4>
+        <p>Interactive, user-generated content. Facebook, YouTube, Twitter. AJAX allowed pages to update without reloading. Responsive design emerged.</p>
+      </div>
+      <div class="timeline-item">
+        <h4>Web 3.0 (2020+) — The Intelligent Web</h4>
+        <p>AI-powered, decentralized (blockchain), progressive web apps (PWAs), voice search, AR/VR experiences. Think: ChatGPT, Metaverse.</p>
+      </div>
+    </div>
+    <div class="arabic">
+      <strong>&#1578;&#1591;&#1608;&#1585; &#1575;&#1604;&#1608;&#1575;&#1576;:</strong><br>
+      <strong>Web 1.0 (1991-2004):</strong> الواب الثابت — صفحات HTML بسيطة، مفيش تفاعل، زي الجرنال الرقمي.<br>
+      <strong>Web 2.0 (2004-2020):</strong> الواب الاجتماعي — فيسبوك، يوتيوب، محتوى تفاعلي، AJAX خلّى الصفحات تتحدث من غير reload.<br>
+      <strong>Web 3.0 (2020+):</strong> الواب الذكي — AI، بلوكتشين، تطبيقات تقدمية (PWA)، واقع افتراضي.
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128200;</span> Comparison Table</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Feature</th><th>Web 1.0</th><th>Web 2.0</th><th>Web 3.0</th></tr></thead>
+        <tbody>
+          <tr><td>Content</td><td>Static text & images</td><td>Dynamic, user-generated</td><td>AI-generated, decentralized</td></tr>
+          <tr><td>Interaction</td><td>Read only</td><td>Read + Write</td><td>Read + Write + Execute</td></tr>
+          <tr><td>Design</td><td>Table-based layouts</td><td>CSS Grid, Flexbox</td><td>AI-assisted, generative</td></tr>
+          <tr><td>Examples</td><td>GeoCities, early Yahoo</td><td>Facebook, YouTube</td><td>ChatGPT, NFTs, Metaverse</td></tr>
+          <tr><td>Devices</td><td>Desktop only</td><td>Desktop + Mobile</td><td>All devices + IoT</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128161;</span> Best Practices</h3>
+    <div class="callout tip">
+      <span class="callout-icon">&#128161;</span>
+      <div class="callout-content">
+        <div class="callout-title">Design for Today</div>
+        <div class="callout-body">Always build responsive, accessible websites. Your site must work on phones, tablets, and desktops. Use modern CSS (Grid, Flexbox, Custom Properties) and semantic HTML5.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128188;</span> Freelancer Tips</h3>
+    <div class="callout challenge">
+      <span class="callout-icon">&#128176;</span>
+      <div class="callout-content">
+        <div class="callout-title">Sell Modern Solutions</div>
+        <div class="callout-body">Many small businesses still have "Web 1.0" style websites. Offer to redesign them with modern responsive design, better SEO, and faster loading. This is an easy sell and great portfolio builder.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- TOPIC 4: MODERN DESIGN PRINCIPLES -->
+<!-- ============================================================ -->
+<section class="topic-section" id="topic4">
+  <div class="topic-header">
+    <div class="topic-number">4</div>
+    <h2>Modern Design Principles</h2>
+    <p class="topic-subtitle">&#1575;&#1604;&#1576;&#1587;&#1575;&#1591;&#1577;&#1548; &#1575;&#1604;&#1578;&#1606;&#1575;&#1587;&#1602;&#1548; &#1608; Visual Hierarchy</p>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128218;</span> Introduction</h3>
+    <p>Good design isn't just about making things "look pretty" — it's about <strong>communication</strong>. Every button, color, and spacing choice affects how users understand and interact with your website. Companies invest millions in design because it directly impacts revenue.</p>
+    <div class="arabic">
+      <strong>&#1575;&#1604;&#1605;&#1602;&#1583;&#1605;&#1577;:</strong><br>
+      التصميم الكويس مش بس إن الحاجة تبقى "شكلها حلو" — هو تواصل.<br>
+      كل زرار ولون ومسافة بتأثر على فهم المستخدم وتفاعله مع الموقع.<br>
+      الشركات بتصرف ملايين على التصميم لأنه بيأثر مباشرة على الأرباح.
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#127912;</span> The 5 Core Principles</h3>
+    <div class="card-grid">
+      <div class="card">
+        <h4>&#9312; Visual Hierarchy</h4>
+        <p>Guide the user's eye to what matters most. Use size, color, contrast, and position to show importance. The biggest element = most important.</p>
+        <div class="arabic">التسلسل البصري: وجّه عين المستخدم لأهم حاجة. استخدم الحجم واللون والتباين والمكان. أكبر عنصر = أهم عنصر.</div>
+      </div>
+      <div class="card">
+        <h4>&#9313; Simplicity</h4>
+        <p>Remove everything that doesn't serve a purpose. "Less is more." Apple's homepage is the gold standard — clean, minimal, focused.</p>
+        <div class="arabic">البساطة: شيل أي حاجة مالهاش لازمة. "الأقل هو الأكتر." صفحة آبل الرئيسية هي المعيار — نظيفة، بسيطة، مركزة.</div>
+      </div>
+      <div class="card">
+        <h4>&#9314; Consistency</h4>
+        <p>Use the same colors, fonts, spacing, and button styles throughout your site. Consistency builds trust. Inconsistency confuses users.</p>
+        <div class="arabic">التناسق: استخدم نفس الألوان والخطوط والمسافات في الموقع كله. التناسق بيبني الثقة. عدم التناسق بيخلّي المستخدم محتار.</div>
+      </div>
+      <div class="card">
+        <h4>&#9315; White Space</h4>
+        <p>Empty space is NOT wasted space. It gives content room to breathe and makes your design look professional. Compare a cluttered newspaper vs. a clean Apple page.</p>
+        <div class="arabic">المساحة البيضاء: المساحة الفاضية مش مهدرة. هي بتدي المحتوى مساحة للتنفس وبتخلي التصميم شكله احترافي.</div>
+      </div>
+      <div class="card">
+        <h4>&#9316; Accessibility</h4>
+        <p>Design for everyone — including people with disabilities. Use proper contrast ratios, alt text for images, keyboard navigation, and semantic HTML.</p>
+        <div class="arabic">إمكانية الوصول: صمم للجميع — بما فيهم الناس اللي عندها إعاقات. استخدم تباين مناسب ووصف للصور وتنقل بالكيبورد.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#127758;</span> Real-World Examples</h3>
+    <div class="callout info">
+      <span class="callout-icon">&#127968;</span>
+      <div class="callout-content">
+        <div class="callout-title">Apple.com</div>
+        <div class="callout-body">Master of simplicity and white space. One product, one message, one call-to-action per section. Huge typography. Minimal navigation.</div>
+      </div>
+    </div>
+    <div class="callout info">
+      <span class="callout-icon">&#127968;</span>
+      <div class="callout-content">
+        <div class="callout-title">Stripe.com</div>
+        <div class="callout-body">Beautiful visual hierarchy. Gradient backgrounds. Clear typography. Every element has purpose. The gold standard for SaaS design.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#9888;</span> Common Mistakes</h3>
+    <div class="callout warning">
+      <span class="callout-icon">&#9888;</span>
+      <div class="callout-content">
+        <div class="callout-title">Design Mistakes Beginners Make</div>
+        <div class="callout-body">
+          <ul>
+            <li>Using too many fonts (stick to 2 max)</li>
+            <li>Using too many colors (pick a palette of 3-5)</li>
+            <li>No white space — cramming everything together</li>
+            <li>Inconsistent button styles and sizes</li>
+            <li>Low contrast text that's hard to read</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- TOPIC 5: DESIGNER TOOLS (VS CODE) -->
+<!-- ============================================================ -->
+<section class="topic-section" id="topic5">
+  <div class="topic-header">
+    <div class="topic-number">5</div>
+    <h2>Designer Tools — VS Code</h2>
+    <p class="topic-subtitle">VS Code + أهم الإضافات (Live Server, Prettier, Emmet)</p>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128218;</span> Introduction</h3>
+    <p>Every professional needs the right tools. In web development, your <strong>code editor</strong> is your most important tool. VS Code (Visual Studio Code) is the world's most popular code editor — used by over 70% of developers. It's free, fast, and has thousands of extensions that make your work easier.</p>
+    <div class="arabic">
+      <strong>المقدمة:</strong><br>
+      كل محترف محتاج الأدوات الصح. في تطوير الويب، محرر الكود هو أهم أداة عندك.<br>
+      VS Code هو أشهر محرر كود في العالم — بيستخدمه أكتر من 70% من المطورين.<br>
+      مجاني، سريع، وعنده آلاف الإضافات اللي بتسهّل شغلك.
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128295;</span> Must-Have Extensions</h3>
+    <div class="card-grid">
+      <div class="card">
+        <h4>Live Server</h4>
+        <p>Opens your HTML file in a browser and auto-refreshes when you save. No more manual refresh!</p>
+        <p><strong>Install:</strong> Extensions panel &#8594; Search "Live Server" &#8594; Install by Ritwick Dey</p>
+        <p><strong>Usage:</strong> Right-click your HTML file &#8594; "Open with Live Server"</p>
+      </div>
+      <div class="card">
+        <h4>Prettier</h4>
+        <p>Auto-formats your code every time you save. Makes your code clean, consistent, and readable.</p>
+        <p><strong>Install:</strong> Extensions &#8594; Search "Prettier" &#8594; Install</p>
+        <p><strong>Setup:</strong> Settings &#8594; Default Formatter &#8594; Prettier &#8594; Format on Save: ON</p>
+      </div>
+      <div class="card">
+        <h4>Auto Rename Tag</h4>
+        <p>When you rename an opening HTML tag, it automatically renames the closing tag too.</p>
+        <p><strong>Install:</strong> Extensions &#8594; Search "Auto Rename Tag" &#8594; Install</p>
+      </div>
+      <div class="card">
+        <h4>HTML CSS Support</h4>
+        <p>Auto-completes CSS class names and IDs inside your HTML. Saves tons of typing.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#9000;</span> Essential VS Code Shortcuts</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Shortcut</th><th>Action</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><kbd>Ctrl</kbd> + <kbd>S</kbd></td><td>Save file</td><td>Save often! Live Server auto-refreshes on save</td></tr>
+          <tr><td><kbd>Ctrl</kbd> + <kbd>D</kbd></td><td>Select next occurrence</td><td>Selects the same word — great for multi-edit</td></tr>
+          <tr><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd></td><td>Command Palette</td><td>Access ALL VS Code features from here</td></tr>
+          <tr><td><kbd>Ctrl</kbd> + <kbd>/</kbd></td><td>Toggle comment</td><td>Comments/uncomments the current line</td></tr>
+          <tr><td><kbd>Alt</kbd> + <kbd>&#8593;</kbd>/<kbd>&#8595;</kbd></td><td>Move line up/down</td><td>Quickly rearrange code</td></tr>
+          <tr><td><kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>&#8595;</kbd></td><td>Copy line down</td><td>Duplicates the current line</td></tr>
+          <tr><td><kbd>Ctrl</kbd> + <kbd>B</kbd></td><td>Toggle sidebar</td><td>More screen space for code</td></tr>
+          <tr><td><kbd>Ctrl</kbd> + <kbd>`</kbd></td><td>Toggle terminal</td><td>Open terminal inside VS Code</td></tr>
+          <tr><td><kbd>Ctrl</kbd> + <kbd>P</kbd></td><td>Quick open file</td><td>Jump to any file by name</td></tr>
+          <tr><td><kbd>Ctrl</kbd> + <kbd>Space</kbd></td><td>Trigger suggestion</td><td>Show auto-complete options</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#129504;</span> Think Like a Developer</h3>
+    <div class="callout tip">
+      <span class="callout-icon">&#128736;</span>
+      <div class="callout-content">
+        <div class="callout-title">Toolbox Analogy</div>
+        <div class="callout-body">Think of VS Code as your <strong>toolbox</strong> and extensions as your <strong>specialized tools</strong>. A carpenter wouldn't use a hammer for everything — they use the right tool for each job. Similarly, install extensions that match your workflow.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#9888;</span> Common Mistakes</h3>
+    <div class="callout warning">
+      <span class="callout-icon">&#9888;</span>
+      <div class="callout-content">
+        <div class="callout-title">Too Many Extensions</div>
+        <div class="callout-body">Don't install 50 extensions. Each extension uses memory. Start with the essentials (Live Server, Prettier, Auto Rename Tag) and add more only when you need them.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128188;</span> Freelancer Tip</h3>
+    <div class="callout challenge">
+      <span class="callout-icon">&#128176;</span>
+      <div class="callout-content">
+        <div class="callout-title">Speed = Money</div>
+        <div class="callout-body">Mastering VS Code shortcuts can double your coding speed. If you charge $30/hour and finish a project 5 hours faster, that's $150 extra. Invest time in learning shortcuts!</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- TOPIC 6: DEVTOOLS OVERVIEW -->
+<!-- ============================================================ -->
+<section class="topic-section" id="topic6">
+  <div class="topic-header">
+    <div class="topic-number">6</div>
+    <h2>DevTools Overview</h2>
+    <p class="topic-subtitle">التعرف على Elements, Console, Network</p>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128218;</span> Introduction</h3>
+    <p>Chrome DevTools is a set of built-in tools that let you <strong>inspect, debug, and analyze</strong> any website. It's like having X-ray vision for web pages. Every professional developer uses DevTools daily — it's non-negotiable.</p>
+    <div class="arabic">
+      <strong>المقدمة:</strong><br>
+      Chrome DevTools هي أدوات مدمجة في المتصفح بتخليك تفحص وتصحح وتحلل أي موقع.<br>
+      زي ما يكون عندك أشعة إكس للمواقع. كل مطور محترف بيستخدم DevTools يوميًا — ده مش اختياري.
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128270;</span> How to Open DevTools</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Method</th><th>Shortcut</th></tr></thead>
+        <tbody>
+          <tr><td>Press F12</td><td><kbd>F12</kbd></td></tr>
+          <tr><td>Right-click &#8594; Inspect</td><td>Mouse</td></tr>
+          <tr><td>Ctrl + Shift + I (Windows)</td><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>I</kbd></td></tr>
+          <tr><td>Ctrl + Shift + J (Console directly)</td><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>J</kbd></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128451;</span> Key Panels Explained</h3>
+    <div class="card-grid">
+      <div class="card">
+        <h4>&#128196; Elements Panel</h4>
+        <p>Shows the HTML structure (DOM tree) of the page. You can:</p>
+        <ul>
+          <li>Click any element to see its HTML</li>
+          <li>Edit HTML in real-time</li>
+          <li>See and modify CSS styles</li>
+          <li>Check box model (margin, padding, border)</li>
+        </ul>
+        <div class="arabic">بيبيّن هيكل HTML (شجرة DOM). تقدر تعدل HTML و CSS في الوقت الحقيقي وتشوف الـ Box Model.</div>
+      </div>
+      <div class="card">
+        <h4>&#128187; Console Panel</h4>
+        <p>Shows JavaScript errors and lets you run JS commands. You can:</p>
+        <ul>
+          <li>See error messages (red text)</li>
+          <li>Log values with <span class="inline-code">console.log()</span></li>
+          <li>Run JavaScript commands directly</li>
+          <li>Test code snippets quickly</li>
+        </ul>
+        <div class="arabic">بيعرض أخطاء JavaScript وبيخليك تشغّل أوامر JS. استخدم console.log() عشان تطبع القيم.</div>
+      </div>
+      <div class="card">
+        <h4>&#127760; Network Panel</h4>
+        <p>Shows every request the browser makes. You can:</p>
+        <ul>
+          <li>See all files loaded (HTML, CSS, JS, images)</li>
+          <li>Check loading time for each file</li>
+          <li>See HTTP status codes (200, 404, 500)</li>
+          <li>Identify slow-loading resources</li>
+        </ul>
+        <div class="arabic">بيعرض كل طلب المتصفح بيعمله. شوف كل الملفات المحملة ووقت التحميل وأكواد HTTP.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128270;</span> Debugging — Step by Step</h3>
+    <div class="callout info">
+      <span class="callout-icon">&#128270;</span>
+      <div class="callout-content">
+        <div class="callout-title">Your Debugging Workflow</div>
+        <div class="callout-body">
+          <ol>
+            <li><strong>Something looks wrong?</strong> &#8594; Open Elements panel &#8594; Click the element selector (top-left icon) &#8594; Click the element on the page</li>
+            <li><strong>Check CSS:</strong> Look at the Styles panel on the right. Is the correct style applied? Is something overridden (strikethrough)?</li>
+            <li><strong>Check Console:</strong> Any red error messages? Read them — they tell you exactly what's wrong</li>
+            <li><strong>Check Network:</strong> Is a file failing to load (red entry, 404)? Fix the file path</li>
+            <li><strong>Use console.log():</strong> Add <span class="inline-code">console.log("checking:", variableName)</span> in your JS to see what values are at that point</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <div class="arabic">
+      <strong>خطوات الـ Debugging:</strong><br>
+      1. حاجة شكلها غلط؟ افتح Elements &#8594; اختار العنصر<br>
+      2. شيك على CSS: هل الـ style صح؟ فيه حاجة متشطبة (strikethrough)؟<br>
+      3. شيك على Console: فيه أخطاء حمرا؟ اقراها — بتقولك بالظبط إيه المشكلة<br>
+      4. شيك على Network: فيه ملف مش بيتحمل (404)؟ صلح مسار الملف<br>
+      5. استخدم console.log() عشان تشوف قيم المتغيرات
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#9888;</span> Common Mistakes</h3>
+    <div class="callout warning">
+      <span class="callout-icon">&#9888;</span>
+      <div class="callout-content">
+        <div class="callout-title">Ignoring Console Errors</div>
+        <div class="callout-body">Many beginners see red errors in the Console and ignore them. <strong>Always read the error message.</strong> It tells you the exact problem and usually the line number. This is the fastest way to fix bugs.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- TOPIC 7: WHAT IS HTML? -->
+<!-- ============================================================ -->
+<section class="topic-section" id="topic7">
+  <div class="topic-header">
+    <div class="topic-number">7</div>
+    <h2>What is HTML?</h2>
+    <p class="topic-subtitle">مقدمة عن HTML وهيكل الصفحة الأساسي</p>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128218;</span> Introduction</h3>
+    <p><strong>HTML</strong> stands for <strong>HyperText Markup Language</strong>. It is the standard language used to create web pages. HTML is NOT a programming language — it's a <strong>markup language</strong> that tells the browser the <em>structure</em> of your content.</p>
+    <p><strong>Think of it this way:</strong></p>
+    <ul>
+      <li><strong>HTML</strong> = The skeleton (structure) of a house</li>
+      <li><strong>CSS</strong> = The paint, furniture, decoration (styling)</li>
+      <li><strong>JavaScript</strong> = The electricity, plumbing, garage door (functionality)</li>
+    </ul>
+    <div class="arabic">
+      <strong>المقدمة:</strong><br>
+      HTML يعني HyperText Markup Language — لغة ترميز النص التشعبي.<br>
+      دي اللغة الأساسية لإنشاء صفحات الويب. HTML مش لغة برمجة — دي لغة ترميز بتقول للمتصفح هيكل المحتوى.<br><br>
+      <strong>فكر فيها كده:</strong><br>
+      HTML = الهيكل العظمي (الهيكل) للبيت<br>
+      CSS = الدهان والأثاث والديكور (الشكل)<br>
+      JavaScript = الكهرباء والسباقة وباب الجراج (الوظائف)
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#127758;</span> Real-World Scenario</h3>
+    <div class="card">
+      <h4>Netflix Example</h4>
+      <p>When you visit Netflix.com, HTML defines:</p>
+      <ul>
+        <li>The heading "Unlimited movies, TV shows, and more"</li>
+        <li>The email input field</li>
+        <li>The "Get Started" button</li>
+        <li>The FAQ section with questions and answers</li>
+        <li>The footer with links</li>
+      </ul>
+      <p>CSS makes it look dark and beautiful. JavaScript makes the buttons work and loads content dynamically.</p>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#129504;</span> Think Like a Developer</h3>
+    <div class="callout tip">
+      <span class="callout-icon">&#127968;</span>
+      <div class="callout-content">
+        <div class="callout-title">Newspaper Analogy</div>
+        <div class="callout-body">
+          <p>HTML is like the structure of a newspaper:</p>
+          <ul>
+            <li><strong>Headlines</strong> = <span class="inline-code">&lt;h1&gt;</span> to <span class="inline-code">&lt;h6&gt;</span></li>
+            <li><strong>Articles</strong> = <span class="inline-code">&lt;p&gt;</span> paragraphs</li>
+            <li><strong>Photos</strong> = <span class="inline-code">&lt;img&gt;</span></li>
+            <li><strong>Links to other stories</strong> = <span class="inline-code">&lt;a&gt;</span></li>
+            <li><strong>Sections</strong> = <span class="inline-code">&lt;section&gt;</span>, <span class="inline-code">&lt;div&gt;</span></li>
+          </ul>
+          <p>The newspaper's <em>structure</em> is HTML. The <em>design</em> (fonts, colors, layout) is CSS.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128221;</span> HTML Basic Structure (Boilerplate)</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">HTML</span><button class="code-copy">Copy</button></div>
+      <pre><span class="cm">&lt;!-- This declares the document type as HTML5 --&gt;</span>
+<span class="tag">&lt;!DOCTYPE html&gt;</span>
+
+<span class="cm">&lt;!-- The root element that contains all HTML --&gt;</span>
+<span class="tag">&lt;html</span> <span class="attr">lang</span>=<span class="val">"en"</span><span class="tag">&gt;</span>
+
+<span class="cm">&lt;!-- Head contains metadata (info about the page) --&gt;</span>
+<span class="tag">&lt;head&gt;</span>
+  <span class="cm">&lt;!-- Character encoding for proper text display --&gt;</span>
+  <span class="tag">&lt;meta</span> <span class="attr">charset</span>=<span class="val">"UTF-8"</span><span class="tag">&gt;</span>
+
+  <span class="cm">&lt;!-- Makes the page responsive on all devices --&gt;</span>
+  <span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="val">"viewport"</span> <span class="attr">content</span>=<span class="val">"width=device-width, initial-scale=1.0"</span><span class="tag">&gt;</span>
+
+  <span class="cm">&lt;!-- The title shown in the browser tab --&gt;</span>
+  <span class="tag">&lt;title&gt;</span>My First Page<span class="tag">&lt;/title&gt;</span>
+<span class="tag">&lt;/head&gt;</span>
+
+<span class="cm">&lt;!-- Body contains everything visible on the page --&gt;</span>
+<span class="tag">&lt;body&gt;</span>
+  <span class="cm">&lt;!-- This is a main heading --&gt;</span>
+  <span class="tag">&lt;h1&gt;</span>Hello World!<span class="tag">&lt;/h1&gt;</span>
+
+  <span class="cm">&lt;!-- This is a paragraph --&gt;</span>
+  <span class="tag">&lt;p&gt;</span>This is my first web page.<span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;/body&gt;</span>
+
+<span class="tag">&lt;/html&gt;</span></pre>
+    </div>
+    <div class="arabic">
+      <strong>شرح الكود:</strong><br>
+      <span class="inline-code">&lt;!DOCTYPE html&gt;</span> — بتقول للمتصفح إن ده مستند HTML5<br>
+      <span class="inline-code">&lt;html&gt;</span> — العنصر الجذر اللي بيحتوي كل HTML<br>
+      <span class="inline-code">&lt;head&gt;</span> — بيحتوي البيانات الوصفية (meta) عن الصفحة — مش بتظهر في الصفحة نفسها<br>
+      <span class="inline-code">&lt;meta charset="UTF-8"&gt;</span> — بيحدد ترميز الحروف عشان الحروف العربية والخاصة تظهر صح<br>
+      <span class="inline-code">&lt;meta name="viewport"&gt;</span> — بيخلي الصفحة responsive على كل الأجهزة<br>
+      <span class="inline-code">&lt;title&gt;</span> — العنوان اللي بيظهر في تاب المتصفح<br>
+      <span class="inline-code">&lt;body&gt;</span> — بيحتوي كل اللي ظاهر في الصفحة (عناوين، فقرات، صور، إلخ)
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128200;</span> Understanding Tags</h3>
+    <div class="callout note">
+      <span class="callout-icon">&#128204;</span>
+      <div class="callout-content">
+        <div class="callout-title">HTML Tag Rules</div>
+        <div class="callout-body">
+          <ul>
+            <li>Most tags come in pairs: <span class="inline-code">&lt;p&gt;...&lt;/p&gt;</span> (opening + closing)</li>
+            <li>Some tags are self-closing: <span class="inline-code">&lt;img /&gt;</span>, <span class="inline-code">&lt;br /&gt;</span>, <span class="inline-code">&lt;hr /&gt;</span></li>
+            <li>Tags can have attributes: <span class="inline-code">&lt;a href="url"&gt;</span></li>
+            <li>Tags can be nested: <span class="inline-code">&lt;div&gt;&lt;p&gt;text&lt;/p&gt;&lt;/div&gt;</span></li>
+            <li>Tags must be properly closed and nested (no overlapping)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="arabic">
+      <strong>قواعد الـ Tags:</strong><br>
+      معظم التاجات بتيجي في أزواج: opening tag و closing tag<br>
+      بعض التاجات self-closing زي img و br و hr<br>
+      التاجات ممكن يكون ليها attributes زي href في a<br>
+      التاجات ممكن تتحط جوا بعض (nested) بس لازم تتقفل بالترتيب
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#9888;</span> Common Mistakes</h3>
+    <div class="callout warning">
+      <span class="callout-icon">&#9888;</span>
+      <div class="callout-content">
+        <div class="callout-title">Forgetting to Close Tags</div>
+        <div class="callout-body">
+          <strong>Wrong:</strong> <span class="inline-code">&lt;p&gt;Hello world</span> (no closing tag)<br>
+          <strong>Correct:</strong> <span class="inline-code">&lt;p&gt;Hello world&lt;/p&gt;</span><br><br>
+          <strong>Wrong nesting:</strong> <span class="inline-code">&lt;b&gt;&lt;i&gt;text&lt;/b&gt;&lt;/i&gt;</span> (overlapping)<br>
+          <strong>Correct nesting:</strong> <span class="inline-code">&lt;b&gt;&lt;i&gt;text&lt;/i&gt;&lt;/b&gt;</span> (properly nested)
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOPICS 5-7 END -->
+
+<!-- ============================================================ -->
+<!-- TOPIC 8: ESSENTIAL TAGS -->
+<!-- ============================================================ -->
+<section class="topic-section" id="topic8">
+  <div class="topic-header">
+    <div class="topic-number">8</div>
+    <h2>Essential HTML Tags</h2>
+    <p class="topic-subtitle">العناوين h1-h6، الفقرات، الروابط، الصور</p>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128218;</span> Introduction</h3>
+    <p>HTML tags are the building blocks of every web page. Each tag has a specific purpose. Learning the essential tags gives you the power to structure any content professionally. These are the tags you'll use in <em>every single project</em> you build.</p>
+    <div class="arabic">
+      <strong>المقدمة:</strong><br>
+      تاجات HTML هي لبنات البناء لأي صفحة ويب. كل تاج ليه غرض معين.<br>
+      تعلم التاجات الأساسية بيديك القدرة إنك تهيكلي أي محتوى بشكل احترافي.<br>
+      دي التاجات اللي هتستخدمها في كل مشروع بتبنيه.
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#127991;</span> Headings (h1–h6)</h3>
+    <p>Headings define the hierarchy of your content. <span class="inline-code">&lt;h1&gt;</span> is the most important (use once per page), <span class="inline-code">&lt;h6&gt;</span> is the least important.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">HTML</span><button class="code-copy">Copy</button></div>
+      <pre><span class="cm">&lt;!-- Main heading — use only ONCE per page --&gt;</span>
+<span class="tag">&lt;h1&gt;</span>Welcome to My Website<span class="tag">&lt;/h1&gt;</span>
+
+<span class="cm">&lt;!-- Section heading --&gt;</span>
+<span class="tag">&lt;h2&gt;</span>About Me<span class="tag">&lt;/h2&gt;</span>
+
+<span class="cm">&lt;!-- Sub-section heading --&gt;</span>
+<span class="tag">&lt;h3&gt;</span>My Skills<span class="tag">&lt;/h3&gt;</span>
+
+<span class="cm">&lt;!-- Sub-sub-section --&gt;</span>
+<span class="tag">&lt;h4&gt;</span>Frontend Development<span class="tag">&lt;/h4&gt;</span>
+
+<span class="cm">&lt;!-- Rarely used, smaller heading --&gt;</span>
+<span class="tag">&lt;h5&gt;</span>HTML &amp; CSS<span class="tag">&lt;/h5&gt;</span>
+
+<span class="cm">&lt;!-- Smallest heading, rarely used --&gt;</span>
+<span class="tag">&lt;h6&gt;</span>Version 1.0<span class="tag">&lt;/h6&gt;</span></pre>
+    </div>
+    <div class="arabic">
+      <strong>شرح العناوين:</strong><br>
+      h1 = أهم عنوان — استخدمه مرة واحدة بس في الصفحة (عنوان رئيسي)<br>
+      h2 = عنوان قسم<br>
+      h3 = عنوان فرعي داخل القسم<br>
+      h4-h6 = عناوين أصغر، نادرًا ما تُستخدم<br>
+      <strong>مهم:</strong> لا تتخطى مستويات (مثلاً من h2 لـ h4 مباشرة) — ده بيأثر على SEO و accessibility
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128221;</span> Paragraphs</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">HTML</span><button class="code-copy">Copy</button></div>
+      <pre><span class="cm">&lt;!-- A paragraph of text --&gt;</span>
+<span class="tag">&lt;p&gt;</span>I am a web developer learning HTML and CSS.<span class="tag">&lt;/p&gt;</span>
+
+<span class="cm">&lt;!-- Another paragraph --&gt;</span>
+<span class="tag">&lt;p&gt;</span>I love building beautiful websites.<span class="tag">&lt;/p&gt;</span>
+
+<span class="cm">&lt;!-- Line break (use sparingly) --&gt;</span>
+<span class="tag">&lt;p&gt;</span>Line one<span class="tag">&lt;br&gt;</span>Line two<span class="tag">&lt;/p&gt;</span>
+
+<span class="cm">&lt;!-- Horizontal rule (visual separator) --&gt;</span>
+<span class="tag">&lt;hr&gt;</span></pre>
+    </div>
+    <div class="arabic">
+      <strong>الفقرات:</strong><br>
+      <span class="inline-code">&lt;p&gt;</span> = فقرة نصية. المتصفح بيضيف مسافة تلقائيًا بين الفقرات.<br>
+      <span class="inline-code">&lt;br&gt;</span> = سطر جديد (line break). استخدمه بحذر — الأفضل استخدام &lt;p&gt; جديدة.<br>
+      <span class="inline-code">&lt;hr&gt;</span> = خط فاصل أفقي. بيستخدم للفصل بين الأقسام.
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128279;</span> Links (Anchor Tag)</h3>
+    <p>The <span class="inline-code">&lt;a&gt;</span> tag creates hyperlinks — the foundation of the web!</p>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">HTML</span><button class="code-copy">Copy</button></div>
+      <pre><span class="cm">&lt;!-- External link — opens in new tab --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"https://google.com"</span> <span class="attr">target</span>=<span class="val">"_blank"</span><span class="tag">&gt;</span>Visit Google<span class="tag">&lt;/a&gt;</span>
+
+<span class="cm">&lt;!-- Internal link — opens in same tab --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"about.html"</span><span class="tag">&gt;</span>About Us<span class="tag">&lt;/a&gt;</span>
+
+<span class="cm">&lt;!-- Email link --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"mailto:info@example.com"</span><span class="tag">&gt;</span>Send Email<span class="tag">&lt;/a&gt;</span>
+
+<span class="cm">&lt;!-- Link to section on same page --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"#contact"</span><span class="tag">&gt;</span>Jump to Contact<span class="tag">&lt;/a&gt;</span>
+
+<span class="cm">&lt;!-- Phone link --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"tel:+20123456789"</span><span class="tag">&gt;</span>Call Us<span class="tag">&lt;/a&gt;</span></pre>
+    </div>
+    <div class="arabic">
+      <strong>الروابط:</strong><br>
+      <span class="inline-code">href</span> = الرابط اللي هتفتحه (أهم attribute)<br>
+      <span class="inline-code">target="_blank"</span> = يفتح في تاب جديد<br>
+      <span class="inline-code">mailto:</span> = رابط إيميل<br>
+      <span class="inline-code">tel:</span> = رابط تليفون<br>
+      <span class="inline-code">href="#section-id"</span> = رابط لقسم في نفس الصفحة
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128247;</span> Images</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">HTML</span><button class="code-copy">Copy</button></div>
+      <pre><span class="cm">&lt;!-- Basic image with alt text --&gt;</span>
+<span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="val">"photo.jpg"</span> <span class="attr">alt</span>=<span class="val">"A beautiful sunset"</span><span class="tag">&gt;</span>
+
+<span class="cm">&lt;!-- Image with width control --&gt;</span>
+<span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="val">"logo.png"</span> <span class="attr">alt</span>=<span class="val">"Company Logo"</span> <span class="attr">width</span>=<span class="val">"200"</span><span class="tag">&gt;</span>
+
+<span class="cm">&lt;!-- Image from the internet --&gt;</span>
+<span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="val">"https://example.com/image.jpg"</span> <span class="attr">alt</span>=<span class="val">"Example"</span><span class="tag">&gt;</span>
+
+<span class="cm">&lt;!-- Image as a link --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"https://google.com"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="val">"google-logo.png"</span> <span class="attr">alt</span>=<span class="val">"Google"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/a&gt;</span></pre>
+    </div>
+    <div class="callout important">
+      <span class="callout-icon">&#9888;</span>
+      <div class="callout-content">
+        <div class="callout-title">Always Include alt Text!</div>
+        <div class="callout-body">The <span class="inline-code">alt</span> attribute is critical for: (1) Accessibility — screen readers read it to blind users, (2) SEO — Google uses it to understand the image, (3) Fallback — shows text if image fails to load. <strong>Never skip it.</strong></div>
+      </div>
+    </div>
+    <div class="arabic">
+      <strong>الصور:</strong><br>
+      <span class="inline-code">src</span> = مسار الصورة (source)<br>
+      <span class="inline-code">alt</span> = وصف الصورة (alternative text) — مهم جدًا للـ accessibility والـ SEO<br>
+      <span class="inline-code">width</span> = عرض الصورة بالبكسل<br>
+      <strong>ملاحظة:</strong> img هو self-closing tag — مش محتاج closing tag
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128200;</span> Text Formatting Tags</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Tag</th><th>Purpose</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td><span class="inline-code">&lt;strong&gt;</span></td><td>Bold (important text)</td><td><strong>Important</strong></td></tr>
+          <tr><td><span class="inline-code">&lt;em&gt;</span></td><td>Italic (emphasis)</td><td><em>Emphasized</em></td></tr>
+          <tr><td><span class="inline-code">&lt;mark&gt;</span></td><td>Highlighted text</td><td><mark>Highlighted</mark></td></tr>
+          <tr><td><span class="inline-code">&lt;small&gt;</span></td><td>Smaller text</td><td><small>Small text</small></td></tr>
+          <tr><td><span class="inline-code">&lt;del&gt;</span></td><td>Deleted/strikethrough</td><td><del>Deleted</del></td></tr>
+          <tr><td><span class="inline-code">&lt;sub&gt;</span></td><td>Subscript</td><td>H<sub>2</sub>O</td></tr>
+          <tr><td><span class="inline-code">&lt;sup&gt;</span></td><td>Superscript</td><td>x<sup>2</sup></td></tr>
+          <tr><td><span class="inline-code">&lt;code&gt;</span></td><td>Inline code</td><td><code>console.log()</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128161;</span> SEO Notes</h3>
+    <div class="callout info">
+      <span class="callout-icon">&#128270;</span>
+      <div class="callout-content">
+        <div class="callout-title">SEO Impact of Tags</div>
+        <div class="callout-body">
+          <ul>
+            <li><strong>h1:</strong> Google uses your h1 to understand the page topic. Make it descriptive and include your main keyword.</li>
+            <li><strong>alt text:</strong> Google Images indexes alt text. Good alt text = more traffic from image search.</li>
+            <li><strong>Semantic HTML:</strong> Use the right tag for the right purpose. Google rewards well-structured pages.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- TOPIC 9: LISTS & CONTENT STRUCTURE -->
+<!-- ============================================================ -->
+<section class="topic-section" id="topic9">
+  <div class="topic-header">
+    <div class="topic-number">9</div>
+    <h2>Lists & Content Structure</h2>
+    <p class="topic-subtitle">القوائم Ordered / Unordered وهيكل المحتوى</p>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128218;</span> Introduction</h3>
+    <p>Lists are one of the most used elements in web design. Navigation menus, feature lists, step-by-step guides, product categories — they all use lists. Understanding when to use ordered vs. unordered lists is essential for proper content structure.</p>
+    <div class="arabic">
+      <strong>المقدمة:</strong><br>
+      القوائم من أكثر العناصر استخدامًا في تصميم الويب.<br>
+      قوائم التنقل، قوائم المميزات، خطوات الشرح، أقسام المنتجات — كلها بتستخدم قوائم.<br>
+      فهم إمتى تستخدم ordered vs unordered مهم جدًا لهيكلة المحتوى صح.
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128221;</span> Unordered List (Bullet Points)</h3>
+    <p>Use when the order of items does <strong>NOT</strong> matter.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">HTML</span><button class="code-copy">Copy</button></div>
+      <pre><span class="cm">&lt;!-- Unordered list — order doesn't matter --&gt;</span>
+<span class="tag">&lt;ul&gt;</span>
+  <span class="cm">&lt;!-- Each item wrapped in li (list item) --&gt;</span>
+  <span class="tag">&lt;li&gt;</span>HTML<span class="tag">&lt;/li&gt;</span>        <span class="cm">&lt;!-- Bullet point 1 --&gt;</span>
+  <span class="tag">&lt;li&gt;</span>CSS<span class="tag">&lt;/li&gt;</span>         <span class="cm">&lt;!-- Bullet point 2 --&gt;</span>
+  <span class="tag">&lt;li&gt;</span>JavaScript<span class="tag">&lt;/li&gt;</span>  <span class="cm">&lt;!-- Bullet point 3 --&gt;</span>
+  <span class="tag">&lt;li&gt;</span>React<span class="tag">&lt;/li&gt;</span>      <span class="cm">&lt;!-- Bullet point 4 --&gt;</span>
+<span class="tag">&lt;/ul&gt;</span></pre>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128290;</span> Ordered List (Numbered)</h3>
+    <p>Use when the order <strong>DOES</strong> matter (steps, rankings, recipes).</p>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">HTML</span><button class="code-copy">Copy</button></div>
+      <pre><span class="cm">&lt;!-- Ordered list — order matters --&gt;</span>
+<span class="tag">&lt;ol&gt;</span>
+  <span class="cm">&lt;!-- Step 1 --&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Open VS Code<span class="tag">&lt;/li&gt;</span>
+
+  <span class="cm">&lt;!-- Step 2 --&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Create a new file<span class="tag">&lt;/li&gt;</span>
+
+  <span class="cm">&lt;!-- Step 3 --&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Type ! and press Enter<span class="tag">&lt;/li&gt;</span>
+
+  <span class="cm">&lt;!-- Step 4 --&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Write your HTML code<span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;/ol&gt;</span></pre>
+    </div>
+    <div class="arabic">
+      <strong>القوائم:</strong><br>
+      <span class="inline-code">&lt;ul&gt;</span> = Unordered List (قائمة غير مرتبة) — بتعرض نقاط (bullets)<br>
+      <span class="inline-code">&lt;ol&gt;</span> = Ordered List (قائمة مرتبة) — بتعرض أرقام (1, 2, 3...)<br>
+      <span class="inline-code">&lt;li&gt;</span> = List Item (عنصر في القائمة) — بيستخدم جوا ul أو ol<br>
+      <strong>متى تستخدم كل نوع؟</strong><br>
+      ul = لما الترتيب مش مهم (مميزات، مكونات، ألوان)<br>
+      ol = لما الترتيب مهم (خطوات، وصفات، ترتيب)
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128200;</span> Nested Lists</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">HTML</span><button class="code-copy">Copy</button></div>
+      <pre><span class="cm">&lt;!-- Nested list — a list inside a list --&gt;</span>
+<span class="tag">&lt;ul&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Frontend
+    <span class="cm">&lt;!-- Sub-list inside the Frontend item --&gt;</span>
+    <span class="tag">&lt;ul&gt;</span>
+      <span class="tag">&lt;li&gt;</span>HTML<span class="tag">&lt;/li&gt;</span>
+      <span class="tag">&lt;li&gt;</span>CSS<span class="tag">&lt;/li&gt;</span>
+      <span class="tag">&lt;li&gt;</span>JavaScript<span class="tag">&lt;/li&gt;</span>
+    <span class="tag">&lt;/ul&gt;</span>
+  <span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Backend
+    <span class="tag">&lt;ul&gt;</span>
+      <span class="tag">&lt;li&gt;</span>Node.js<span class="tag">&lt;/li&gt;</span>
+      <span class="tag">&lt;li&gt;</span>.NET<span class="tag">&lt;/li&gt;</span>
+    <span class="tag">&lt;/ul&gt;</span>
+  <span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;/ul&gt;</span></pre>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128451;</span> Semantic Structure Tags</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Tag</th><th>Purpose</th><th>When to Use</th></tr></thead>
+        <tbody>
+          <tr><td><span class="inline-code">&lt;header&gt;</span></td><td>Page/section header</td><td>Logo, navigation, title area</td></tr>
+          <tr><td><span class="inline-code">&lt;nav&gt;</span></td><td>Navigation links</td><td>Menu bars, breadcrumbs</td></tr>
+          <tr><td><span class="inline-code">&lt;main&gt;</span></td><td>Main content area</td><td>The primary content (once per page)</td></tr>
+          <tr><td><span class="inline-code">&lt;section&gt;</span></td><td>Thematic grouping</td><td>Related content blocks</td></tr>
+          <tr><td><span class="inline-code">&lt;article&gt;</span></td><td>Self-contained content</td><td>Blog posts, news articles, cards</td></tr>
+          <tr><td><span class="inline-code">&lt;aside&gt;</span></td><td>Side content</td><td>Sidebar, related links, ads</td></tr>
+          <tr><td><span class="inline-code">&lt;footer&gt;</span></td><td>Page/section footer</td><td>Copyright, links, contact info</td></tr>
+          <tr><td><span class="inline-code">&lt;div&gt;</span></td><td>Generic container</td><td>When no semantic tag fits</td></tr>
+          <tr><td><span class="inline-code">&lt;span&gt;</span></td><td>Inline container</td><td>Styling part of text</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="arabic">
+      <strong>تاجات الهيكل الدلالي (Semantic):</strong><br>
+      header = رأس الصفحة أو القسم (لوجو، قائمة تنقل)<br>
+      nav = روابط التنقل (القائمة الرئيسية)<br>
+      main = المحتوى الأساسي (مرة واحدة في الصفحة)<br>
+      section = تجميع مواضيع مرتبطة<br>
+      article = محتوى مستقل (مقال، خبر)<br>
+      aside = محتوى جانبي (سايدبار، إعلانات)<br>
+      footer = ذيل الصفحة (حقوق، روابط)<br>
+      <strong>ليه نستخدم Semantic Tags؟</strong> SEO أفضل + Accessibility أحسن + كود أنضف + شركات كبيرة بتطلبها
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128202;</span> Visual Diagram — Page Structure</h3>
+    <div class="diagram">
+&#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+&#9474;                    &lt;header&gt;                      &#9474;
+&#9474;           Logo + Navigation + Title              &#9474;
+&#9500;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9508;
+&#9474;                                                     &#9474;
+&#9474;  &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;  &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;  &#9474;
+&#9474;  &#9474;        &lt;main&gt;           &#9474;  &#9474;  &lt;aside&gt;    &#9474;  &#9474;
+&#9474;  &#9474;                         &#9474;  &#9474;             &#9474;  &#9474;
+&#9474;  &#9474;  &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;  &#9474;  &#9474;  Sidebar   &#9474;  &#9474;
+&#9474;  &#9474;  &#9474; &lt;section&gt;  &#9474;  &#9474;  &#9474;  Links     &#9474;  &#9474;
+&#9474;  &#9474;  &#9474;  Content   &#9474;  &#9474;  &#9474;  Ads       &#9474;  &#9474;
+&#9474;  &#9474;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;  &#9474;  &#9474;             &#9474;  &#9474;
+&#9474;  &#9474;                         &#9474;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;  &#9474;
+&#9474;  &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;               &#9474;
+&#9474;                                                     &#9474;
+&#9500;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9508;
+&#9474;                    &lt;footer&gt;                      &#9474;
+&#9474;           Copyright + Links + Info               &#9474;
+&#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- TOPIC 10: EMMET BASICS -->
+<!-- ============================================================ -->
+<section class="topic-section" id="topic10">
+  <div class="topic-header">
+    <div class="topic-number">10</div>
+    <h2>Emmet Basics</h2>
+    <p class="topic-subtitle">مقدمة عن Emmet لتسريع كتابة HTML</p>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128218;</span> Introduction</h3>
+    <p><strong>Emmet</strong> is a built-in tool in VS Code that lets you write HTML <em>extremely fast</em> using abbreviations. Instead of typing full tags, you type a short abbreviation, press <kbd>Tab</kbd>, and Emmet expands it into full HTML code. This alone can save you <strong>hours</strong> of typing per project.</p>
+    <div class="arabic">
+      <strong>المقدمة:</strong><br>
+      Emmet هي أداة مدمجة في VS Code بتخليك تكتب HTML بسرعة خارقة باستخدام اختصارات.<br>
+      بدل ما تكتب تاجات كاملة، بتكتب اختصار قصير وتضغط Tab، و Emmet بيحولها لكود HTML كامل.<br>
+      الأداة دي لوحدها ممكن توفرلك ساعات كتابة في كل مشروع.
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#9889;</span> Essential Emmet Shortcuts</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Type This</th><th>Press</th><th>Get This</th></tr></thead>
+        <tbody>
+          <tr><td><span class="inline-code">!</span></td><td><kbd>Tab</kbd></td><td>Full HTML5 boilerplate</td></tr>
+          <tr><td><span class="inline-code">h1</span></td><td><kbd>Tab</kbd></td><td><span class="inline-code">&lt;h1&gt;&lt;/h1&gt;</span></td></tr>
+          <tr><td><span class="inline-code">p</span></td><td><kbd>Tab</kbd></td><td><span class="inline-code">&lt;p&gt;&lt;/p&gt;</span></td></tr>
+          <tr><td><span class="inline-code">div</span></td><td><kbd>Tab</kbd></td><td><span class="inline-code">&lt;div&gt;&lt;/div&gt;</span></td></tr>
+          <tr><td><span class="inline-code">div.container</span></td><td><kbd>Tab</kbd></td><td><span class="inline-code">&lt;div class="container"&gt;&lt;/div&gt;</span></td></tr>
+          <tr><td><span class="inline-code">div#main</span></td><td><kbd>Tab</kbd></td><td><span class="inline-code">&lt;div id="main"&gt;&lt;/div&gt;</span></td></tr>
+          <tr><td><span class="inline-code">ul&gt;li*5</span></td><td><kbd>Tab</kbd></td><td>UL with 5 LI items</td></tr>
+          <tr><td><span class="inline-code">nav&gt;ul&gt;li*3&gt;a</span></td><td><kbd>Tab</kbd></td><td>Nested navigation structure</td></tr>
+          <tr><td><span class="inline-code">a[href="url"]</span></td><td><kbd>Tab</kbd></td><td>Link with href</td></tr>
+          <tr><td><span class="inline-code">img[src="photo.jpg"][alt="Photo"]</span></td><td><kbd>Tab</kbd></td><td>Image with src and alt</td></tr>
+          <tr><td><span class="inline-code">h2{Hello World}</span></td><td><kbd>Tab</kbd></td><td><span class="inline-code">&lt;h2&gt;Hello World&lt;/h2&gt;</span></td></tr>
+          <tr><td><span class="inline-code">p*3>lorem</span></td><td><kbd>Tab</kbd></td><td>3 paragraphs with lorem ipsum text</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128187;</span> Code Examples</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">Emmet → HTML</span><button class="code-copy">Copy</button></div>
+      <pre><span class="cm">/* Type this abbreviation: */</span>
+<span class="fn">header>nav>ul>li*4>a{Item $}</span>
+
+<span class="cm">/* Press Tab, and you get: */</span>
+<span class="tag">&lt;header&gt;</span>
+  <span class="tag">&lt;nav&gt;</span>
+    <span class="tag">&lt;ul&gt;</span>
+      <span class="tag">&lt;li&gt;</span><span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">""</span><span class="tag">&gt;</span>Item 1<span class="tag">&lt;/a&gt;</span><span class="tag">&lt;/li&gt;</span>
+      <span class="tag">&lt;li&gt;</span><span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">""</span><span class="tag">&gt;</span>Item 2<span class="tag">&lt;/a&gt;</span><span class="tag">&lt;/li&gt;</span>
+      <span class="tag">&lt;li&gt;</span><span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">""</span><span class="tag">&gt;</span>Item 3<span class="tag">&lt;/a&gt;</span><span class="tag">&lt;/li&gt;</span>
+      <span class="tag">&lt;li&gt;</span><span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">""</span><span class="tag">&gt;</span>Item 4<span class="tag">&lt;/a&gt;</span><span class="tag">&lt;/li&gt;</span>
+    <span class="tag">&lt;/ul&gt;</span>
+  <span class="tag">&lt;/nav&gt;</span>
+<span class="tag">&lt;/header&gt;</span></pre>
+    </div>
+    <div class="arabic">
+      <strong>شرح Emmet:</strong><br>
+      <span class="inline-code">></span> = يعني "جوا" (child). يعني nav>ul = ul جوا nav<br>
+      <span class="inline-code">*</span> = كرر. يعني li*5 = 5 عناصر li<br>
+      <span class="inline-code">.</span> = class. يعني div.container = div بالـ class "container"<br>
+      <span class="inline-code">#</span> = id. يعني div#main = div بالـ id "main"<br>
+      <span class="inline-code">{}</span> = نص جوا العنصر. يعني h1{Hello} = h1 فيه نص Hello<br>
+      <span class="inline-code">$</span> = رقم تلقائي متزايد. يعني li*3{Item $} = Item 1, Item 2, Item 3<br>
+      <span class="inline-code">+</span> = عنصر جنب عنصر (sibling). يعني h2+p = h2 وبعده p
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128161;</span> Best Practices</h3>
+    <div class="callout tip">
+      <span class="callout-icon">&#128161;</span>
+      <div class="callout-content">
+        <div class="callout-title">Emmet Pro Tips</div>
+        <div class="callout-body">
+          <ul>
+            <li>Always use <span class="inline-code">!</span> + Tab to start a new HTML file — never type the boilerplate manually</li>
+            <li>Use Emmet for repetitive structures (lists, cards, gallery items)</li>
+            <li>Combine with <span class="inline-code">lorem</span> for placeholder text: <span class="inline-code">p*5>lorem20</span> = 5 paragraphs with 20 words each</li>
+            <li>Use <span class="inline-code">Ctrl + D</span> after expanding Emmet to quickly select and edit repeated text</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#9888;</span> Common Mistakes</h3>
+    <div class="callout warning">
+      <span class="callout-icon">&#9888;</span>
+      <div class="callout-content">
+        <div class="callout-title">Emmet Not Working?</div>
+        <div class="callout-body">
+          <ul>
+            <li>Make sure your file has <span class="inline-code">.html</span> extension (not .txt)</li>
+            <li>Make sure VS Code recognizes the file as HTML (check bottom-right corner)</li>
+            <li>Press <kbd>Tab</kbd> (not Enter) to expand the abbreviation</li>
+            <li>Make sure your cursor is at the end of the abbreviation</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- HANDS-ON PROJECT -->
+<!-- ============================================================ -->
+<section class="topic-section" id="project">
+  <div class="topic-header">
+    <div class="topic-number">&#128187;</div>
+    <h2>Hands-On Project: Personal Bio Page</h2>
+    <p class="topic-subtitle">إنشاء أول صفحة HTML شخصية كاملة وفتحها بـ Live Server</p>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#127919;</span> Project Requirements</h3>
+    <div class="card">
+      <ul class="objectives">
+        <li>Create a well-structured HTML5 page with proper boilerplate</li>
+        <li>Include your name as h1 heading</li>
+        <li>Add a professional photo with alt text</li>
+        <li>Write a bio paragraph about yourself</li>
+        <li>List your skills using unordered list</li>
+        <li>List your education timeline using ordered list</li>
+        <li>Add links to your social media (LinkedIn, GitHub)</li>
+        <li>Use semantic tags (header, main, section, footer)</li>
+        <li>Open with Live Server and verify it works</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128194;</span> Folder Structure</h3>
+    <div class="diagram">
+my-bio-page/
+├── index.html          (Main HTML file)
+├── images/
+│   └── profile.jpg     (Your photo)
+└── (That's it for Session 1!)
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128187;</span> Complete Project Code</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">HTML — index.html</span><button class="code-copy">Copy</button></div>
+      <pre><span class="cm">&lt;!-- HTML5 Document Type Declaration --&gt;</span>
+<span class="tag">&lt;!DOCTYPE html&gt;</span>
+
+<span class="cm">&lt;!-- Root element with English language --&gt;</span>
+<span class="tag">&lt;html</span> <span class="attr">lang</span>=<span class="val">"en"</span><span class="tag">&gt;</span>
+
+<span class="cm">&lt;!-- Head: Contains page metadata --&gt;</span>
+<span class="tag">&lt;head&gt;</span>
+  <span class="cm">&lt;!-- Character encoding for proper text display --&gt;</span>
+  <span class="tag">&lt;meta</span> <span class="attr">charset</span>=<span class="val">"UTF-8"</span><span class="tag">&gt;</span>
+
+  <span class="cm">&lt;!-- Responsive viewport for mobile devices --&gt;</span>
+  <span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="val">"viewport"</span> <span class="attr">content</span>=<span class="val">"width=device-width, initial-scale=1.0"</span><span class="tag">&gt;</span>
+
+  <span class="cm">&lt;!-- Page title shown in browser tab --&gt;</span>
+  <span class="tag">&lt;title&gt;</span>Yousef Eldbah — Web Developer<span class="tag">&lt;/title&gt;</span>
+<span class="tag">&lt;/head&gt;</span>
+
+<span class="cm">&lt;!-- Body: Contains all visible content --&gt;</span>
+<span class="tag">&lt;body&gt;</span>
+
+  <span class="cm">&lt;!-- Header section with name and intro --&gt;</span>
+  <span class="tag">&lt;header&gt;</span>
+    <span class="cm">&lt;!-- Main heading — your name --&gt;</span>
+    <span class="tag">&lt;h1&gt;</span>Yousef Eldbah<span class="tag">&lt;/h1&gt;</span>
+
+    <span class="cm">&lt;!-- Sub-heading — your role --&gt;</span>
+    <span class="tag">&lt;h2&gt;</span>Full Stack Web Developer<span class="tag">&lt;/h2&gt;</span>
+  <span class="tag">&lt;/header&gt;</span>
+
+  <span class="cm">&lt;!-- Main content area --&gt;</span>
+  <span class="tag">&lt;main&gt;</span>
+
+    <span class="cm">&lt;!-- About Me Section --&gt;</span>
+    <span class="tag">&lt;section&gt;</span>
+      <span class="cm">&lt;!-- Section heading --&gt;</span>
+      <span class="tag">&lt;h3&gt;</span>About Me<span class="tag">&lt;/h3&gt;</span>
+
+      <span class="cm">&lt;!-- Profile image with descriptive alt text --&gt;</span>
+      <span class="tag">&lt;img</span>
+        <span class="attr">src</span>=<span class="val">"images/profile.jpg"</span>
+        <span class="attr">alt</span>=<span class="val">"Photo of Yousef Eldbah, web developer"</span>
+        <span class="attr">width</span>=<span class="val">"200"</span>
+      <span class="tag">&gt;</span>
+
+      <span class="cm">&lt;!-- Bio paragraph --&gt;</span>
+      <span class="tag">&lt;p&gt;</span>
+        I am a Full Stack Developer specializing in
+        React and .NET. I work as a freelancer and
+        instructor at NTI. I co-founded MindLoop Academy
+        and I am an ITI graduate.
+      <span class="tag">&lt;/p&gt;</span>
+    <span class="tag">&lt;/section&gt;</span>
+
+    <span class="cm">&lt;!-- Skills Section --&gt;</span>
+    <span class="tag">&lt;section&gt;</span>
+      <span class="tag">&lt;h3&gt;</span>My Skills<span class="tag">&lt;/h3&gt;</span>
+
+      <span class="cm">&lt;!-- Unordered list — order doesn't matter --&gt;</span>
+      <span class="tag">&lt;ul&gt;</span>
+        <span class="tag">&lt;li&gt;</span>HTML5 &amp; CSS3<span class="tag">&lt;/li&gt;</span>
+        <span class="tag">&lt;li&gt;</span>JavaScript (ES6+)<span class="tag">&lt;/li&gt;</span>
+        <span class="tag">&lt;li&gt;</span>React.js<span class="tag">&lt;/li&gt;</span>
+        <span class="tag">&lt;li&gt;</span>Node.js<span class="tag">&lt;/li&gt;</span>
+        <span class="tag">&lt;li&gt;</span>.NET / C#<span class="tag">&lt;/li&gt;</span>
+        <span class="tag">&lt;li&gt;</span>MongoDB &amp; SQL<span class="tag">&lt;/li&gt;</span>
+      <span class="tag">&lt;/ul&gt;</span>
+    <span class="tag">&lt;/section&gt;</span>
+
+    <span class="cm">&lt;!-- Education Timeline Section --&gt;</span>
+    <span class="tag">&lt;section&gt;</span>
+      <span class="tag">&lt;h3&gt;</span>My Journey<span class="tag">&lt;/h3&gt;</span>
+
+      <span class="cm">&lt;!-- Ordered list — timeline order matters --&gt;</span>
+      <span class="tag">&lt;ol&gt;</span>
+        <span class="tag">&lt;li&gt;</span>Graduated from ITI (Information Technology Institute)<span class="tag">&lt;/li&gt;</span>
+        <span class="tag">&lt;li&gt;</span>Started freelancing on MERN stack projects<span class="tag">&lt;/li&gt;</span>
+        <span class="tag">&lt;li&gt;</span>Joined Dimensions IT as Full Stack Developer<span class="tag">&lt;/li&gt;</span>
+        <span class="tag">&lt;li&gt;</span>Became Instructor at NTI<span class="tag">&lt;/li&gt;</span>
+        <span class="tag">&lt;li&gt;</span>Co-Founded MindLoop Academy<span class="tag">&lt;/li&gt;</span>
+      <span class="tag">&lt;/ol&gt;</span>
+    <span class="tag">&lt;/section&gt;</span>
+
+    <span class="cm">&lt;!-- Contact / Links Section --&gt;</span>
+    <span class="tag">&lt;section&gt;</span>
+      <span class="tag">&lt;h3&gt;</span>Connect With Me<span class="tag">&lt;/h3&gt;</span>
+
+      <span class="cm">&lt;!-- LinkedIn link — opens in new tab --&gt;</span>
+      <span class="tag">&lt;p&gt;</span>
+        <span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"https://www.linkedin.com/in/yousef-eldbah/"</span>
+           <span class="attr">target</span>=<span class="val">"_blank"</span><span class="tag">&gt;</span>
+          My LinkedIn Profile
+        <span class="tag">&lt;/a&gt;</span>
+      <span class="tag">&lt;/p&gt;</span>
+    <span class="tag">&lt;/section&gt;</span>
+
+  <span class="tag">&lt;/main&gt;</span>
+
+  <span class="cm">&lt;!-- Footer with copyright --&gt;</span>
+  <span class="tag">&lt;footer&gt;</span>
+    <span class="cm">&lt;!-- Copyright notice with current year --&gt;</span>
+    <span class="tag">&lt;p&gt;</span>
+      <span class="tag">&lt;small&gt;</span>&amp;copy; 2025 Yousef Eldbah. All rights reserved.<span class="tag">&lt;/small&gt;</span>
+    <span class="tag">&lt;/p&gt;</span>
+  <span class="tag">&lt;/footer&gt;</span>
+
+<span class="tag">&lt;/body&gt;</span>
+<span class="tag">&lt;/html&gt;</span></pre>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#9989;</span> Step-by-Step Instructions</h3>
+    <div class="timeline">
+      <div class="timeline-item"><h4>Step 1</h4><p>Create a folder called <span class="inline-code">my-bio-page</span> on your Desktop</p></div>
+      <div class="timeline-item"><h4>Step 2</h4><p>Inside it, create <span class="inline-code">index.html</span> and an <span class="inline-code">images</span> folder</p></div>
+      <div class="timeline-item"><h4>Step 3</h4><p>Add your photo to the images folder and rename it to <span class="inline-code">profile.jpg</span></p></div>
+      <div class="timeline-item"><h4>Step 4</h4><p>Open <span class="inline-code">index.html</span> in VS Code</p></div>
+      <div class="timeline-item"><h4>Step 5</h4><p>Type <span class="inline-code">!</span> and press <kbd>Tab</kbd> to generate the boilerplate</p></div>
+      <div class="timeline-item"><h4>Step 6</h4><p>Copy the code above, customize it with your info</p></div>
+      <div class="timeline-item"><h4>Step 7</h4><p>Right-click in the editor → "Open with Live Server"</p></div>
+      <div class="timeline-item"><h4>Step 8</h4><p>Your page opens in the browser! Save changes to see live updates.</p></div>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128161;</span> Best Practices</h3>
+    <div class="callout tip">
+      <span class="callout-icon">&#128161;</span>
+      <div class="callout-content">
+        <div class="callout-title">Project Best Practices</div>
+        <div class="callout-body">
+          <ul>
+            <li>Always use semantic HTML tags (header, main, section, footer)</li>
+            <li>Include alt text on every image</li>
+            <li>Use only one h1 per page</li>
+            <li>Don't skip heading levels (h1 → h2 → h3, not h1 → h4)</li>
+            <li>Keep your code properly indented (2 or 4 spaces)</li>
+            <li>Add comments to explain complex sections</li>
+            <li>Test your page on mobile (use DevTools device toolbar)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- INTERVIEW QUESTIONS -->
+<!-- ============================================================ -->
+<section class="topic-section" id="interview">
+  <div class="topic-header">
+    <div class="topic-number">&#127891;</div>
+    <h2>Interview Questions</h2>
+    <p class="topic-subtitle">15 سؤال إنترفيو مع الإجابات الاحترافية</p>
+  </div>
+
+  <div class="section-block">
+
+    <div class="collapsible">
+      <div class="collapsible-header">
+        <span>Q1: What is HTML and what does it stand for?</span>
+        <span class="arrow">&#9660;</span>
+      </div>
+      <div class="collapsible-body">
+        <p><strong>Best Answer:</strong> HTML stands for HyperText Markup Language. It is the standard markup language used to structure content on the web. It uses tags to define elements like headings, paragraphs, images, and links. HTML is not a programming language — it describes the structure and meaning of web content.</p>
+        <p><strong>Why they ask:</strong> To verify you understand the fundamentals and can differentiate markup from programming.</p>
+        <p><strong>Common wrong answer:</strong> "HTML is a programming language used to make websites" — This is incorrect because HTML doesn't have logic, loops, or conditions.</p>
+        <div class="arabic">HTML هي لغة ترميز النص التشعبي. مش لغة برمجة — هي بتحدد هيكل ومعنى المحتوى على الويب باستخدام التاجات.</div>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header">
+        <span>Q2: What is the difference between HTML elements and tags?</span>
+        <span class="arrow">&#9660;</span>
+      </div>
+      <div class="collapsible-body">
+        <p><strong>Best Answer:</strong> A <em>tag</em> is the opening or closing marker (e.g., <span class="inline-code">&lt;p&gt;</span> or <span class="inline-code">&lt;/p&gt;</span>). An <em>element</em> is the complete unit: the opening tag + content + closing tag (e.g., <span class="inline-code">&lt;p&gt;Hello&lt;/p&gt;</span>).</p>
+        <p><strong>Why they ask:</strong> Tests precision in terminology — important for clear team communication.</p>
+        <p><strong>Common wrong answer:</strong> Using "tag" and "element" interchangeably without knowing the distinction.</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header">
+        <span>Q3: What is the purpose of DOCTYPE?</span>
+        <span class="arrow">&#9660;</span>
+      </div>
+      <div class="collapsible-body">
+        <p><strong>Best Answer:</strong> <span class="inline-code">&lt;!DOCTYPE html&gt;</span> tells the browser that this document uses HTML5. Without it, the browser may render the page in "quirks mode" — an old compatibility mode that can cause inconsistent layouts.</p>
+        <p><strong>Why they ask:</strong> Tests knowledge of browser rendering behavior.</p>
+        <p><strong>Common wrong answer:</strong> "DOCTYPE is a comment" or "It's optional" — it's critical for proper rendering.</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header">
+        <span>Q4: What's the difference between block and inline elements?</span>
+        <span class="arrow">&#9660;</span>
+      </div>
+      <div class="collapsible-body">
+        <p><strong>Best Answer:</strong> <strong>Block elements</strong> (div, p, h1-h6, section) take the full width available and start on a new line. <strong>Inline elements</strong> (span, a, strong, em) only take the width of their content and don't start on a new line.</p>
+        <p><strong>Why they ask:</strong> This is foundational for CSS layout understanding.</p>
+        <p><strong>Common wrong answer:</strong> "Block is big and inline is small" — it's about layout behavior, not size.</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header">
+        <span>Q5: What are semantic HTML elements and why are they important?</span>
+        <span class="arrow">&#9660;</span>
+      </div>
+      <div class="collapsible-body">
+        <p><strong>Best Answer:</strong> Semantic elements clearly describe their meaning (header, nav, main, article, section, footer). They are important because: (1) Better SEO — search engines understand content structure, (2) Better accessibility — screen readers can navigate the page, (3) Better code readability — other developers understand your code faster.</p>
+        <p><strong>Why they ask:</strong> Tests whether you write meaningful HTML vs. just using divs everywhere.</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header">
+        <span>Q6: What is the difference between &lt;head&gt; and &lt;header&gt;?</span>
+        <span class="arrow">&#9660;</span>
+      </div>
+      <div class="collapsible-body">
+        <p><strong>Best Answer:</strong> <span class="inline-code">&lt;head&gt;</span> contains metadata about the document (title, CSS links, meta tags) — it's NOT visible on the page. <span class="inline-code">&lt;header&gt;</span> is a visible semantic element that represents the introductory section of a page or section (logo, navigation, heading).</p>
+        <p><strong>Common wrong answer:</strong> Confusing them as the same thing because they sound similar.</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header">
+        <span>Q7: What does the alt attribute do and why is it important?</span>
+        <span class="arrow">&#9660;</span>
+      </div>
+      <div class="collapsible-body">
+        <p><strong>Best Answer:</strong> The <span class="inline-code">alt</span> attribute provides alternative text for an image. It serves three purposes: (1) Accessibility — screen readers read it to visually impaired users, (2) SEO — search engines use it to understand image content, (3) Fallback — displayed when the image fails to load.</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header">
+        <span>Q8: Explain the Client-Server model.</span>
+        <span class="arrow">&#9660;</span>
+      </div>
+      <div class="collapsible-body">
+        <p><strong>Best Answer:</strong> The Client-Server model is how the web works. The <strong>client</strong> (browser on your device) sends an HTTP <strong>request</strong> to a <strong>server</strong> (a computer that stores websites). The server processes the request and sends back an HTTP <strong>response</strong> containing the requested resources (HTML, CSS, JS). The browser then renders these resources into a visible web page.</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header">
+        <span>Q9: What is Emmet and how does it help?</span>
+        <span class="arrow">&#9660;</span>
+      </div>
+      <div class="collapsible-body">
+        <p><strong>Best Answer:</strong> Emmet is a toolkit built into VS Code that expands abbreviations into full HTML/CSS code. For example, typing <span class="inline-code">ul>li*5</span> and pressing Tab creates a complete unordered list with 5 items. It dramatically speeds up HTML writing and reduces typos.</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header">
+        <span>Q10: What is the difference between ordered and unordered lists?</span>
+        <span class="arrow">&#9660;</span>
+      </div>
+      <div class="collapsible-body">
+        <p><strong>Best Answer:</strong> <span class="inline-code">&lt;ul&gt;</span> (unordered list) displays items with bullet points — use when order doesn't matter (features, ingredients). <span class="inline-code">&lt;ol&gt;</span> (ordered list) displays items with numbers — use when order matters (steps, rankings). Both use <span class="inline-code">&lt;li&gt;</span> for list items.</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header">
+        <span>Q11: What is the purpose of meta viewport tag?</span>
+        <span class="arrow">&#9660;</span>
+      </div>
+      <div class="collapsible-body">
+        <p><strong>Best Answer:</strong> <span class="inline-code">&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</span> tells the browser to set the page width to match the device width and set the initial zoom level to 1. Without this tag, mobile browsers will render the page as if it were on a desktop screen, making everything tiny.</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header">
+        <span>Q12: What is the difference between div and span?</span>
+        <span class="arrow">&#9660;</span>
+      </div>
+      <div class="collapsible-body">
+        <p><strong>Best Answer:</strong> <span class="inline-code">&lt;div&gt;</span> is a block-level generic container — it takes full width and starts on a new line. <span class="inline-code">&lt;span&gt;</span> is an inline generic container — it only takes the width of its content. Use div for sections/layouts, use span for styling small pieces of text within a paragraph.</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header">
+        <span>Q13: How do you debug a web page?</span>
+        <span class="arrow">&#9660;</span>
+      </div>
+      <div class="collapsible-body">
+        <p><strong>Best Answer:</strong> I use Chrome DevTools (F12): (1) <strong>Elements panel</strong> to inspect HTML/CSS, (2) <strong>Console</strong> to check for JavaScript errors and test code, (3) <strong>Network tab</strong> to check HTTP requests and loading performance, (4) <strong>Device Toolbar</strong> to test responsive design. I also use console.log() to debug JavaScript values.</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header">
+        <span>Q14: What is the purpose of charset="UTF-8"?</span>
+        <span class="arrow">&#9660;</span>
+      </div>
+      <div class="collapsible-body">
+        <p><strong>Best Answer:</strong> UTF-8 is a character encoding that supports virtually all characters from all languages (Arabic, Chinese, emoji, etc.). Setting <span class="inline-code">charset="UTF-8"</span> ensures the browser correctly displays all text on your page. Without it, special characters may appear as question marks or garbled text.</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="collapsible-header">
+        <span>Q15: What are self-closing (void) elements? Give examples.</span>
+        <span class="arrow">&#9660;</span>
+      </div>
+      <div class="collapsible-body">
+        <p><strong>Best Answer:</strong> Self-closing (void) elements don't have closing tags because they don't contain content. Examples: <span class="inline-code">&lt;img&gt;</span>, <span class="inline-code">&lt;br&gt;</span>, <span class="inline-code">&lt;hr&gt;</span>, <span class="inline-code">&lt;input&gt;</span>, <span class="inline-code">&lt;meta&gt;</span>, <span class="inline-code">&lt;link&gt;</span>. They may optionally include a forward slash before the closing bracket (e.g., <span class="inline-code">&lt;img /&gt;</span>), but it's not required in HTML5.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- MCQ QUIZ -->
+<!-- ============================================================ -->
+<section class="topic-section" id="mcq">
+  <div class="topic-header">
+    <div class="topic-number">&#9989;</div>
+    <h2>MCQ Quiz — 10 Questions</h2>
+    <p class="topic-subtitle">اختبار اختيار من متعدد</p>
+  </div>
+
+  <div class="section-block">
+    <div class="quiz">
+      <div class="quiz-question">
+        <div class="quiz-q">1. Which tag creates the largest heading?</div>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this,false)">h6</div>
+          <div class="quiz-option" onclick="checkAnswer(this,true)">h1</div>
+          <div class="quiz-option" onclick="checkAnswer(this,false)">heading</div>
+          <div class="quiz-option" onclick="checkAnswer(this,false)">head</div>
+        </div>
+      </div>
+      <div class="quiz-question">
+        <div class="quiz-q">2. What does &lt;a&gt; tag create?</div>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this,false)">An image</div>
+          <div class="quiz-option" onclick="checkAnswer(this,false)">An article</div>
+          <div class="quiz-option" onclick="checkAnswer(this,true)">A hyperlink</div>
+          <div class="quiz-option" onclick="checkAnswer(this,false)">An animation</div>
+        </div>
+      </div>
+      <div class="quiz-question">
+        <div class="quiz-q">3. Which attribute is required on img tags?</div>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this,false)">href</div>
+          <div class="quiz-option" onclick="checkAnswer(this,true)">alt</div>
+          <div class="quiz-option" onclick="checkAnswer(this,false)">title</div>
+          <div class="quiz-option" onclick="checkAnswer(this,false)">class</div>
+        </div>
+      </div>
+      <div class="quiz-question">
+        <div class="quiz-q">4. Which tag is self-closing?</div>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this,false)">p</div>
+          <div class="quiz-option" onclick="checkAnswer(this,false)">div</div>
+          <div class="quiz-option" onclick="checkAnswer(this,true)">img</div>
+          <div class="quiz-option" onclick="checkAnswer(this,false)">a</div>
+        </div>
+      </div>
+      <div class="quiz-question">
+        <div class="quiz-q">5. What does Emmet abbreviation "ul>li*3" produce?</div>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this,true)">An unordered list with 3 items</div>
+          <div class="quiz-option" onclick="checkAnswer(this,false)">An ordered list with 3 items</div>
+          <div class="quiz-option" onclick="checkAnswer(this,false)">3 separate lists</div>
+          <div class="quiz-option" onclick="checkAnswer(this,false)">An error</div>
+        </div>
+      </div>
+      <div class="quiz-question">
+        <div class="quiz-q">6. Which panel in DevTools shows HTTP requests?</div>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this,false)">Elements</div>
+          <div class="quiz-option" onclick="checkAnswer(this,false)">Console</div>
+          <div class="quiz-option" onclick="checkAnswer(this,true)">Network</div>
+          <div class="quiz-option" onclick="checkAnswer(this,false)">Sources</div>
+        </div>
+      </div>
+      <div class="quiz-question">
+        <div class="quiz-q">7. What does DNS stand for?</div>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this,true)">Domain Name System</div>
+          <div class="quiz-option" onclick="checkAnswer(this,false)">Data Network Service</div>
+          <div class="quiz-option" onclick="checkAnswer(this,false)">Digital Name Server</div>
+          <div class="quiz-option" onclick="checkAnswer(this,false)">Dynamic Network System</div>
+        </div>
+      </div>
+      <div class="quiz-question">
+        <div class="quiz-q">8. Which is NOT a semantic HTML element?</div>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this,false)">article</div>
+          <div class="quiz-option" onclick="checkAnswer(this,true)">div</div>
+          <div class="quiz-option" onclick="checkAnswer(this,false)">nav</div>
+          <div class="quiz-option" onclick="checkAnswer(this,false)">footer</div>
+        </div>
+      </div>
+      <div class="quiz-question">
+        <div class="quiz-q">9. What shortcut opens the VS Code Command Palette?</div>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this,false)">Ctrl + S</div>
+          <div class="quiz-option" onclick="checkAnswer(this,false)">Ctrl + P</div>
+          <div class="quiz-option" onclick="checkAnswer(this,true)">Ctrl + Shift + P</div>
+          <div class="quiz-option" onclick="checkAnswer(this,false)">Ctrl + D</div>
+        </div>
+      </div>
+      <div class="quiz-question">
+        <div class="quiz-q">10. What character encoding should you always use?</div>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="checkAnswer(this,false)">ASCII</div>
+          <div class="quiz-option" onclick="checkAnswer(this,true)">UTF-8</div>
+          <div class="quiz-option" onclick="checkAnswer(this,false)">Latin-1</div>
+          <div class="quiz-option" onclick="checkAnswer(this,false)">Unicode</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRUE / FALSE -->
+  <h3><span class="emoji">&#9989;</span> True / False — 10 Questions</h3>
+  <div class="section-block">
+    <div class="tf-grid">
+      <div class="tf-item"><span class="tf-badge tf-true">TRUE</span><span>HTML is a markup language, not a programming language.</span></div>
+      <div class="tf-item"><span class="tf-badge tf-false">FALSE</span><span>You should use multiple h1 tags on a single page. (Use only one h1 per page for best SEO.)</span></div>
+      <div class="tf-item"><span class="tf-badge tf-true">TRUE</span><span>The alt attribute on images is important for accessibility and SEO.</span></div>
+      <div class="tf-item"><span class="tf-badge tf-false">FALSE</span><span>CSS makes web pages functional while JavaScript makes them beautiful. (It's the opposite — CSS is for styling, JS is for functionality.)</span></div>
+      <div class="tf-item"><span class="tf-badge tf-true">TRUE</span><span>Emmet is built into VS Code and requires no additional installation.</span></div>
+      <div class="tf-item"><span class="tf-badge tf-false">FALSE</span><span>&lt;div&gt; is a semantic HTML element. (div is a generic container with no semantic meaning.)</span></div>
+      <div class="tf-item"><span class="tf-badge tf-true">TRUE</span><span>The Network tab in DevTools shows all HTTP requests made by the browser.</span></div>
+      <div class="tf-item"><span class="tf-badge tf-true">TRUE</span><span>DNS translates domain names (like google.com) into IP addresses.</span></div>
+      <div class="tf-item"><span class="tf-badge tf-false">FALSE</span><span>You should put all JavaScript in the &lt;head&gt; tag. (Put scripts before &lt;/body&gt; or use defer to avoid blocking rendering.)</span></div>
+      <div class="tf-item"><span class="tf-badge tf-true">TRUE</span><span>Live Server auto-refreshes your page when you save changes in VS Code.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- CODING CHALLENGES -->
+<!-- ============================================================ -->
+<section class="topic-section" id="challenges">
+  <div class="topic-header">
+    <div class="topic-number">&#127942;</div>
+    <h2>Coding Challenges</h2>
+    <p class="topic-subtitle">تحديات البرمجة — Easy, Medium, Hard</p>
+  </div>
+
+  <div class="section-block">
+    <div class="callout challenge">
+      <span class="callout-icon">&#127775;</span>
+      <div class="callout-content">
+        <div class="callout-title">Easy — Build a Recipe Page</div>
+        <div class="callout-body">
+          <p>Create an HTML page for your favorite recipe with:</p>
+          <ul>
+            <li>Recipe name as h1</li>
+            <li>An image of the dish</li>
+            <li>Description paragraph</li>
+            <li>Ingredients as unordered list</li>
+            <li>Steps as ordered list</li>
+            <li>Use semantic tags (header, main, section, footer)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout challenge">
+      <span class="callout-icon">&#127775;&#127775;</span>
+      <div class="callout-content">
+        <div class="callout-title">Medium — Build a Company Landing Page</div>
+        <div class="callout-body">
+          <p>Create a landing page for a fictional company with:</p>
+          <ul>
+            <li>Header with company name and navigation links</li>
+            <li>Hero section with h1 and description</li>
+            <li>Services section with 3 items (each with h3 and p)</li>
+            <li>About section with image and paragraph</li>
+            <li>Contact section with email and phone links</li>
+            <li>Footer with copyright</li>
+            <li>Use only Emmet to create the structure, then fill in content</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout challenge">
+      <span class="callout-icon">&#127775;&#127775;&#127775;</span>
+      <div class="callout-content">
+        <div class="callout-title">Hard — Build a Documentation Page</div>
+        <div class="callout-body">
+          <p>Create a documentation-style page (like MDN) with:</p>
+          <ul>
+            <li>Sidebar navigation using unordered lists with anchor links</li>
+            <li>At least 5 sections, each with headings, paragraphs, code examples, and images</li>
+            <li>A table of contents at the top</li>
+            <li>Nested lists for sub-topics</li>
+            <li>Proper semantic HTML throughout</li>
+            <li>All navigation links should scroll to the correct sections</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128221;</span> Hands-On Exercises</h3>
+    <div class="card-grid">
+      <div class="card">
+        <h4>Exercise 1: Tag Practice</h4>
+        <p>Create a page that uses every tag learned in this session. Include at least one of each: h1-h6, p, a, img, ul, ol, li, strong, em, br, hr, div, span.</p>
+      </div>
+      <div class="card">
+        <h4>Exercise 2: Emmet Speed Test</h4>
+        <p>Time yourself: create a complete page structure (header, nav, main with 3 sections, footer) using only Emmet abbreviations. Goal: under 2 minutes!</p>
+      </div>
+      <div class="card">
+        <h4>Exercise 3: DevTools Detective</h4>
+        <p>Open any website (try amazon.com). Use DevTools to: (1) Find the main heading text, (2) Count how many images are on the page, (3) Check the HTTP status code, (4) Find the total page load time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- HOMEWORK -->
+<!-- ============================================================ -->
+<section class="topic-section" id="homework">
+  <div class="topic-header">
+    <div class="topic-number">&#128218;</div>
+    <h2>Homework</h2>
+    <p class="topic-subtitle">واجب Session 1</p>
+  </div>
+  <div class="section-block">
+    <div class="callout important">
+      <span class="callout-icon">&#128218;</span>
+      <div class="callout-content">
+        <div class="callout-title">Homework Assignment</div>
+        <div class="callout-body">
+          <ol>
+            <li><strong>Build a Portfolio Structure:</strong> Create an HTML page with header (name + nav), main section (about, skills with ul, experience with ol), and footer (social links). Use only semantic tags — no divs where a semantic tag would work.</li>
+            <li><strong>DevTools Report:</strong> Open 3 different websites (e.g., Netflix, Facebook, Apple). For each, use DevTools to: screenshot the Elements panel showing the page structure, check the Network tab for total load time, and note any console errors.</li>
+            <li><strong>Emmet Challenge:</strong> Write 10 Emmet abbreviations and predict what HTML they'll generate. Then test your predictions in VS Code. Document any surprises.</li>
+            <li><strong>Written Questions:</strong> Answer in your own words: (a) Explain Client-Server to a 10-year-old, (b) Why is semantic HTML important? List 3 reasons, (c) What happens if you remove the DOCTYPE declaration?</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- CHEAT SHEET -->
+<!-- ============================================================ -->
+<section class="topic-section" id="cheatsheet">
+  <div class="topic-header">
+    <div class="topic-number">&#128196;</div>
+    <h2>Cheat Sheet</h2>
+    <p class="topic-subtitle">ملخص سريع — Session 1</p>
+  </div>
+
+  <div class="section-block">
+    <h3><span class="emoji">&#128203;</span> HTML Quick Reference</h3>
+    <div class="cheat-sheet">
+      <div class="cheat-item">
+        <h5>Document Structure</h5>
+        <code>&lt;!DOCTYPE html&gt;</code>
+        <code>&lt;html lang="en"&gt;</code>
+        <code>&lt;head&gt;...&lt;/head&gt;</code>
+        <code>&lt;body&gt;...&lt;/body&gt;</code>
+        <code>&lt;/html&gt;</code>
+      </div>
+      <div class="cheat-item">
+        <h5>Headings</h5>
+        <code>&lt;h1&gt;...&lt;/h1&gt; (largest)</code>
+        <code>&lt;h2&gt;...&lt;/h2&gt;</code>
+        <code>&lt;h6&gt;...&lt;/h6&gt; (smallest)</code>
+      </div>
+      <div class="cheat-item">
+        <h5>Text</h5>
+        <code>&lt;p&gt;Paragraph&lt;/p&gt;</code>
+        <code>&lt;strong&gt;Bold&lt;/strong&gt;</code>
+        <code>&lt;em&gt;Italic&lt;/em&gt;</code>
+        <code>&lt;br&gt; (line break)</code>
+        <code>&lt;hr&gt; (horizontal rule)</code>
+      </div>
+      <div class="cheat-item">
+        <h5>Links</h5>
+        <code>&lt;a href="url"&gt;Text&lt;/a&gt;</code>
+        <code>&lt;a href="url" target="_blank"&gt;</code>
+        <code>&lt;a href="mailto:e@x.com"&gt;</code>
+        <code>&lt;a href="tel:+123"&gt;</code>
+        <code>&lt;a href="#id"&gt;Jump&lt;/a&gt;</code>
+      </div>
+      <div class="cheat-item">
+        <h5>Images</h5>
+        <code>&lt;img src="file.jpg" alt="desc"&gt;</code>
+        <code>&lt;img src="url" alt="desc" width="300"&gt;</code>
+      </div>
+      <div class="cheat-item">
+        <h5>Lists</h5>
+        <code>&lt;ul&gt;&lt;li&gt;...&lt;/li&gt;&lt;/ul&gt;</code>
+        <code>&lt;ol&gt;&lt;li&gt;...&lt;/li&gt;&lt;/ol&gt;</code>
+      </div>
+      <div class="cheat-item">
+        <h5>Semantic Tags</h5>
+        <code>&lt;header&gt; &lt;nav&gt; &lt;main&gt;</code>
+        <code>&lt;section&gt; &lt;article&gt;</code>
+        <code>&lt;aside&gt; &lt;footer&gt;</code>
+      </div>
+      <div class="cheat-item">
+        <h5>Meta Tags</h5>
+        <code>&lt;meta charset="UTF-8"&gt;</code>
+        <code>&lt;meta name="viewport"</code>
+        <code> content="width=device-width,</code>
+        <code> initial-scale=1.0"&gt;</code>
+      </div>
+      <div class="cheat-item">
+        <h5>Emmet Shortcuts</h5>
+        <code>! + Tab = HTML boilerplate</code>
+        <code>tag.class + Tab</code>
+        <code>tag#id + Tab</code>
+        <code>parent>child + Tab</code>
+        <code>tag*n + Tab (repeat)</code>
+        <code>tag{text} + Tab</code>
+      </div>
+      <div class="cheat-item">
+        <h5>VS Code Shortcuts</h5>
+        <code>Ctrl+S = Save</code>
+        <code>Ctrl+D = Select next occurrence</code>
+        <code>Ctrl+Shift+P = Command Palette</code>
+        <code>Ctrl+/ = Toggle comment</code>
+        <code>Alt+Shift+Down = Copy line</code>
+        <code>Ctrl+` = Toggle terminal</code>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- GLOSSARY -->
+<!-- ============================================================ -->
+<section class="topic-section" id="glossary">
+  <div class="topic-header">
+    <div class="topic-number">&#128214;</div>
+    <h2>Glossary</h2>
+    <p class="topic-subtitle">قاموس المصطلحات التقنية</p>
+  </div>
+
+  <div class="section-block">
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Term</th><th>English Definition</th><th>&#1576;&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;</th></tr></thead>
+        <tbody>
+          <tr><td><strong>HTML</strong></td><td>HyperText Markup Language — structures web content</td><td>&#1604;&#1594;&#1577; &#1578;&#1585;&#1605;&#1610;&#1586; &#1575;&#1604;&#1606;&#1589; &#1575;&#1604;&#1578;&#1588;&#1593;&#1576;&#1610;</td></tr>
+          <tr><td><strong>Tag</strong></td><td>A keyword surrounded by angle brackets (e.g., &lt;p&gt;)</td><td>&#1603;&#1604;&#1605;&#1577; &#1605;&#1581;&#1591;&#1577; &#1576;&#1594;&#1604;&#1575;&#1601; &#1586;&#1575;&#1608;&#1610;</td></tr>
+          <tr><td><strong>Element</strong></td><td>A complete unit: opening tag + content + closing tag</td><td>&#1608;&#1581;&#1583;&#1577; &#1603;&#1575;&#1605;&#1604;&#1577;: &#1578;&#1575;&#1580; &#1575;&#1601;&#1578;&#1578;&#1575;&#1581; + &#1605;&#1581;&#1578;&#1608;&#1609; + &#1578;&#1575;&#1580; &#1576;&#1589;</td></tr>
+          <tr><td><strong>Attribute</strong></td><td>Extra info inside an opening tag (e.g., href, src, alt)</td><td>&#1605;&#1593;&#1604;&#1608;&#1605;&#1577; &#1573;&#1590;&#1575;&#1601;&#1610;&#1577; &#1580;&#1608;&#1575; &#1578;&#1575;&#1580; &#1575;&#1604;&#1575;&#1601;&#1578;&#1578;&#1575;&#1581;</td></tr>
+          <tr><td><strong>Client</strong></td><td>The device/browser that requests web pages</td><td>&#1575;&#1604;&#1580;&#1607;&#1575;&#1586; &#1575;&#1604;&#1604;&#1610; &#1576;&#1610;&#1591;&#1604;&#1576; &#1575;&#1604;&#1589;&#1601;&#1581;&#1577;</td></tr>
+          <tr><td><strong>Server</strong></td><td>A computer that stores and serves web pages</td><td>&#1580;&#1607;&#1575;&#1586; &#1576;&#1610;&#1582;&#1586;&#1606; &#1608;&#1576;&#1610;&#1576;&#1593;&#1578; &#1575;&#1604;&#1589;&#1601;&#1581;&#1575;&#1578;</td></tr>
+          <tr><td><strong>DNS</strong></td><td>Domain Name System — translates names to IP addresses</td><td>&#1606;&#1592;&#1575;&#1605; &#1578;&#1585;&#1580;&#1605;&#1577; &#1575;&#1604;&#1571;&#1587;&#1605;&#1575;&#1569; &#1604;&#1593;&#1606;&#1575;&#1608;&#1610;&#1606;</td></tr>
+          <tr><td><strong>HTTP/HTTPS</strong></td><td>Protocol for web communication (S = Secure)</td><td>&#1576;&#1585;&#1608;&#1578;&#1608;&#1603;&#1608;&#1604; &#1575;&#1604;&#1575;&#1578;&#1589;&#1575;&#1604; &#1593;&#1604;&#1609; &#1575;&#1604;&#1608;&#1610;&#1576;</td></tr>
+          <tr><td><strong>DOM</strong></td><td>Document Object Model — tree representation of HTML</td><td>&#1606;&#1605;&#1608;&#1584;&#1580; &#1603;&#1575;&#1574;&#1606; &#1575;&#1604;&#1605;&#1587;&#1578;&#1606;&#1583;</td></tr>
+          <tr><td><strong>URL</strong></td><td>Uniform Resource Locator — a web address</td><td>&#1593;&#1606;&#1608;&#1575;&#1606; &#1575;&#1604;&#1605;&#1608;&#1602;&#1593;</td></tr>
+          <tr><td><strong>Semantic</strong></td><td>Using tags that describe their meaning/purpose</td><td>&#1575;&#1587;&#1578;&#1582;&#1583;&#1575;&#1605; &#1578;&#1575;&#1580;&#1575;&#1578; &#1576;&#1578;&#1608;&#1590;&#1581; &#1575;&#1604;&#1605;&#1593;&#1606;&#1609;</td></tr>
+          <tr><td><strong>Emmet</strong></td><td>Built-in VS Code tool that expands HTML abbreviations</td><td>&#1571;&#1583;&#1575;&#1577; &#1601;&#1610; VS Code &#1576;&#1578;&#1581;&#1608;&#1604; &#1575;&#1604;&#1575;&#1582;&#1578;&#1589;&#1575;&#1585;&#1575;&#1578;</td></tr>
+          <tr><td><strong>DevTools</strong></td><td>Built-in browser tools for inspecting/debugging</td><td>&#1571;&#1583;&#1608;&#1575;&#1578; &#1575;&#1604;&#1605;&#1578;&#1589;&#1601;&#1581; &#1604;&#1604;&#1601;&#1581;&#1589; &#1608;&#1575;&#1604;&#1578;&#1589;&#1581;&#1610;&#1581;</td></tr>
+          <tr><td><strong>Boilerplate</strong></td><td>Standard starting code template</td><td>&#1602;&#1575;&#1604;&#1576; &#1575;&#1604;&#1603;&#1608;&#1583; &#1575;&#1604;&#1571;&#1587;&#1575;&#1587;&#1610;</td></tr>
+          <tr><td><strong>Rendering</strong></td><td>The browser process of displaying the page</td><td>&#1593;&#1605;&#1604;&#1610;&#1577; &#1593;&#1585;&#1590; &#1575;&#1604;&#1589;&#1601;&#1581;&#1577;</td></tr>
+          <tr><td><strong>Responsive</strong></td><td>Design that adapts to different screen sizes</td><td>&#1578;&#1589;&#1605;&#1610;&#1605; &#1576;&#1610;&#1578;&#1603;&#1610;&#1601; &#1605;&#1593; &#1580;&#1605;&#1610;&#1593; &#1575;&#1604;&#1588;&#1575;&#1588;&#1575;&#1578;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- REVISION SHEET -->
+<!-- ============================================================ -->
+<section class="topic-section" id="revision">
+  <div class="topic-header">
+    <div class="topic-number">&#128221;</div>
+    <h2>Revision Sheet</h2>
+    <p class="topic-subtitle">ورقة مراجعة سريعة</p>
+  </div>
+
+  <div class="section-block">
+    <div class="card-grid">
+      <div class="card">
+        <h4>&#127760; Internet</h4>
+        <p>Global network of computers. Client requests, Server responds. DNS translates names to IPs. HTTP/HTTPS is the communication protocol.</p>
+      </div>
+      <div class="card">
+        <h4>&#128421; Browsers</h4>
+        <p>DNS Lookup &#8594; TCP Connection &#8594; HTTP Request &#8594; Server Response &#8594; Parse HTML &#8594; Build DOM &#8594; Apply CSS &#8594; Execute JS &#8594; Paint</p>
+      </div>
+      <div class="card">
+        <h4>&#128640; Web Evolution</h4>
+        <p>Web 1.0 (Static) &#8594; Web 2.0 (Social/Interactive) &#8594; Web 3.0 (AI/Decentralized)</p>
+      </div>
+      <div class="card">
+        <h4>&#127912; Design Principles</h4>
+        <p>Visual Hierarchy + Simplicity + Consistency + White Space + Accessibility = Great Design</p>
+      </div>
+      <div class="card">
+        <h4>&#128295; VS Code</h4>
+        <p>Essential extensions: Live Server, Prettier, Auto Rename Tag. Master keyboard shortcuts for 2x speed.</p>
+      </div>
+      <div class="card">
+        <h4>&#128270; DevTools</h4>
+        <p>F12 to open. Elements = HTML/CSS. Console = JS errors & logs. Network = HTTP requests & performance.</p>
+      </div>
+      <div class="card">
+        <h4>&#128196; HTML Structure</h4>
+        <p>DOCTYPE &#8594; html &#8594; head (meta, title) &#8594; body (visible content). Always include charset & viewport meta.</p>
+      </div>
+      <div class="card">
+        <h4>&#127991; Essential Tags</h4>
+        <p>h1-h6 (headings), p (paragraph), a (link), img (image), strong/em (formatting). Always close tags, always add alt text.</p>
+      </div>
+      <div class="card">
+        <h4>&#128221; Lists</h4>
+        <p>ul = unordered (bullets), ol = ordered (numbers), li = list item. Use semantic tags: header, nav, main, section, footer.</p>
+      </div>
+      <div class="card">
+        <h4>&#9889; Emmet</h4>
+        <p>! = boilerplate. tag*n = repeat. parent>child = nesting. .class #id {text} $ = counter. Tab to expand.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- MIND MAP -->
+<!-- ============================================================ -->
+<section class="topic-section" id="mindmap">
+  <div class="topic-header">
+    <div class="topic-number">&#129504;</div>
+    <h2>Mind Map</h2>
+    <p class="topic-subtitle">خريطة ذهنية — Session 1</p>
+  </div>
+
+  <div class="section-block">
+    <div class="mind-map">
+      <div class="mind-map-center">Session 1: Web + HTML Basics</div>
+      <div class="mind-map-branches">
+        <div class="mind-map-branch">&#127760; Internet<br><small>Client/Server, DNS, HTTP</small></div>
+        <div class="mind-map-branch">&#128421; Browsers<br><small>Request/Response, DOM, Rendering</small></div>
+        <div class="mind-map-branch">&#128640; Web Evolution<br><small>1.0, 2.0, 3.0</small></div>
+        <div class="mind-map-branch">&#127912; Design<br><small>Hierarchy, Simplicity, A11y</small></div>
+        <div class="mind-map-branch">&#128295; VS Code<br><small>Live Server, Prettier</small></div>
+        <div class="mind-map-branch">&#128270; DevTools<br><small>Elements, Console, Network</small></div>
+        <div class="mind-map-branch">&#128196; HTML<br><strong>Structure, Tags, Attributes</strong></div>
+        <div class="mind-map-branch">&#127991; Tags<br><small>h1-h6, p, a, img</small></div>
+        <div class="mind-map-branch">&#128221; Lists<br><small>ul, ol, li</small></div>
+        <div class="mind-map-branch">&#9889; Emmet<br><small>!, *, >, ., #, {}</small></div>
+        <div class="mind-map-branch">&#128187; Project<br><small>Personal Bio Page</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- BONUS TIPS -->
+<!-- ============================================================ -->
+<section class="topic-section" id="bonus">
+  <div class="topic-header">
+    <div class="topic-number">&#127775;</div>
+    <h2>Bonus Tips</h2>
+    <p class="topic-subtitle">نصائح احترافية إضافية</p>
+  </div>
+
+  <div class="section-block">
+    <div class="callout tip">
+      <span class="callout-icon">&#128161;</span>
+      <div class="callout-content">
+        <div class="callout-title">Pro Developer Tips</div>
+        <div class="callout-body">
+          <ul>
+            <li><strong>View Source:</strong> Right-click any website &#8594; "View Page Source" to see its HTML. Great for learning how professionals structure their code.</li>
+            <li><strong>Chrome Extensions:</strong> Install "Web Developer" and "Wappalyzer" to analyze any website's technology stack.</li>
+            <li><strong>HTML Validator:</strong> Use <a href="https://validator.w3.org" target="_blank">validator.w3.org</a> to check your HTML for errors. Professional code is always valid.</li>
+            <li><strong>Can I Use:</strong> Visit <a href="https://caniuse.com" target="_blank">caniuse.com</a> before using any HTML/CSS feature to check browser support.</li>
+            <li><strong>File Naming:</strong> Always use lowercase filenames with hyphens (my-page.html, not My Page.html). This avoids server issues on Linux.</li>
+            <li><strong>Indentation:</strong> Choose either 2 spaces or 4 spaces and be consistent. VS Code default is 4. Most web projects use 2.</li>
+            <li><strong>Comments are free:</strong> Comment your code generously. Your future self (and teammates) will thank you.</li>
+            <li><strong>Learn by reading:</strong> Spend 10 minutes daily reading other people's code on GitHub. It's the fastest way to level up.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- DID YOU KNOW? -->
+<!-- ============================================================ -->
+<section class="topic-section" id="didyouknow">
+  <div class="topic-header">
+    <div class="topic-number">&#129300;</div>
+    <h2>Did You Know?</h2>
+    <p class="topic-subtitle">معلومات مثيرة للاهتمام</p>
+  </div>
+
+  <div class="section-block">
+    <div class="card-grid">
+      <div class="card">
+        <h4>&#127760; The First Website</h4>
+        <p>The first website ever created was on August 6, 1991, by Tim Berners-Lee at CERN. It's still online at <a href="http://info.cern.ch" target="_blank">info.cern.ch</a>. It's pure HTML with no CSS!</p>
+      </div>
+      <div class="card">
+        <h4>&#128200; 1.98 Billion Websites</h4>
+        <p>As of 2025, there are over 1.98 billion websites on the internet — but only about 200 million are actually active. The rest are parked or inactive.</p>
+      </div>
+      <div class="card">
+        <h4>&#9889; Google Crawls 2 Trillion Pages</h4>
+        <p>Google's search bot crawls over 2 trillion web pages per year. That's why semantic HTML and proper structure matter — it helps Google understand and rank your content.</p>
+      </div>
+      <div class="card">
+        <h4>&#128187; VS Code Dominance</h4>
+        <p>VS Code is used by over 70% of developers worldwide (Stack Overflow Survey 2024). It has over 40,000 extensions in its marketplace.</p>
+      </div>
+      <div class="card">
+        <h4>&#128218; HTML Has 140+ Tags</h4>
+        <p>HTML5 has over 140 different tags, but you'll use about 20-30 of them in 95% of your work. Focus on mastering the essentials first.</p>
+      </div>
+      <div class="card">
+        <h4>&#127912; The $150B Web Design Market</h4>
+        <p>The global web design market is valued at over $150 billion. Freelance web designers earn $50-$200/hour on average. HTML is the first step into this lucrative field.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SUMMARY -->
+<!-- ============================================================ -->
+<section class="topic-section" id="summary">
+  <div class="topic-header">
+    <div class="topic-number">&#128214;</div>
+    <h2>Summary</h2>
+    <p class="topic-subtitle">ملخص Session 1</p>
+  </div>
+
+  <div class="section-block">
+    <div class="card" style="border-left:4px solid var(--accent-blue)">
+      <h3><span class="emoji">&#128218;</span> What We Learned Today</h3>
+      <ol style="padding-left:24px;color:var(--text-secondary);font-size:.95rem;line-height:2">
+        <li><strong>The Internet</strong> is a global network where clients request data and servers respond with web pages.</li>
+        <li><strong>Browsers</strong> follow a pipeline: DNS lookup &#8594; TCP connection &#8594; HTTP request &#8594; receive response &#8594; render the page.</li>
+        <li><strong>Web Design</strong> evolved from static pages (Web 1.0) to interactive apps (Web 2.0) to AI-powered experiences (Web 3.0).</li>
+        <li><strong>Design Principles</strong> — Visual Hierarchy, Simplicity, Consistency, White Space, and Accessibility — make websites usable and beautiful.</li>
+        <li><strong>VS Code</strong> is your primary tool with essential extensions: Live Server, Prettier, and Auto Rename Tag.</li>
+        <li><strong>DevTools</strong> (F12) lets you inspect HTML, debug CSS, check errors in Console, and monitor network performance.</li>
+        <li><strong>HTML</strong> (HyperText Markup Language) structures all web content using elements like headings, paragraphs, links, and images.</li>
+        <li><strong>Essential Tags</strong> include h1-h6, p, a, img, strong, em — each with specific purpose and proper attributes.</li>
+        <li><strong>Lists</strong> come in two flavors: unordered (ul, bullets) and ordered (ol, numbers), both using li for items.</li>
+        <li><strong>Emmet</strong> dramatically speeds up HTML writing with abbreviations that expand into full code.</li>
+      </ol>
+      <div class="arabic">
+        <strong>ملخص الجلسة:</strong><br>
+        النهاردة اتعلمنا إن الإنترنت عبارة عن شبكة عالمية (Client بيطلب، Server بيرد).<br>
+        المتصفح بيتبع خطوات: DNS &#8594; TCP &#8594; HTTP Request &#8594; Response &#8594; Render.<br>
+        الواب تطور من صفحات ثابتة لتطبيقات تفاعلية لتجارب ذكية.<br>
+        مبادئ التصميم (التسلسل البصري، البساطة، التناسق) بتخلي المواقع احترافية.<br>
+        VS Code هو أداتك الأساسية مع Live Server و Prettier.<br>
+        DevTools بيخليك تفحص وتصلح أي صفحة.<br>
+        HTML بيهيكل المحتوى بالتاجات (عناوين، فقرات، روابط، صور).<br>
+        القوائم (ul/ol) من أكثر العناصر استخدامًا.<br>
+        Emmet بيسرّع كتابة HTML بشكل كبير.<br>
+        بنينا أول صفحة HTML شخصية كاملة!
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- NEXT SESSION PREVIEW -->
+<!-- ============================================================ -->
+<section class="topic-section" id="next">
+  <div class="topic-header">
+    <div class="topic-number">&#9654;</div>
+    <h2>Next Session Preview</h2>
+    <p class="topic-subtitle">معاينة Session 2 — CSS Fundamentals</p>
+  </div>
+
+  <div class="section-block">
+    <div class="card" style="border-left:4px solid var(--accent-purple)">
+      <h3><span class="emoji">&#127912;</span> Session 2: CSS Fundamentals</h3>
+      <p>In the next session, we'll learn how to make our HTML pages beautiful with CSS (Cascading Style Sheets):</p>
+      <ul class="objectives">
+        <li>What is CSS and how does it work with HTML?</li>
+        <li>CSS Syntax: selectors, properties, and values</li>
+        <li>Colors: named colors, hex codes, RGB, HSL</li>
+        <li>Typography: fonts, sizes, weights, line-height</li>
+        <li>The Box Model: margin, padding, border, content</li>
+        <li>Backgrounds: colors, images, gradients</li>
+        <li>Three ways to add CSS: inline, internal, external</li>
+        <li>CSS specificity and the cascade</li>
+      </ul>
+      <div class="arabic" style="margin-top:16px">
+        في الجلسة الجاية هنتعلم CSS — إزاي نخلي صفحاتنا شكلها حلو.<br>
+        هنتعلم الألوان، الخطوط، الـ Box Model، وإزاي نضيف CSS لـ HTML.<br>
+        جهز نفسك لأننا هنحول صفحة الـ Bio اللي عملناها النهاردة لموقع احترافي!
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <p>Web Design Bootcamp &middot; Session 1: Introduction to Web + HTML Basics</p>
+  <p style="margin-top:8px">Created by <a href="https://www.linkedin.com/in/yousef-eldbah/" target="_blank">Yousef Eldbah</a> &middot; Instructor @ NTI</p>
+  <p style="margin-top:4px;color:var(--text-muted)">&copy; 2025 MindLoop Academy. All rights reserved.</p>
+</footer>
+
+</div><!-- end content-wrapper -->
+</main>
+
+<!-- SCRIPTS -->
+<script>
+// Sidebar toggle
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open')}
+
+// Copy code button
+document.addEventListener('click',function(e){
+  if(e.target.classList.contains('code-copy')){
+    const pre=e.target.closest('.code-block').querySelector('pre');
+    navigator.clipboard.writeText(pre.textContent).then(()=>{
+      e.target.textContent='Copied!';e.target.classList.add('copied');
+      setTimeout(()=>{e.target.textContent='Copy';e.target.classList.remove('copied')},2000);
+    });
+  }
+});
+
+// Collapsible
+document.addEventListener('click',function(e){
+  if(e.target.closest('.collapsible-header')){e.target.closest('.collapsible').classList.toggle('open')}
+});
+
+// Quiz answer check
+function checkAnswer(el,correct){
+  el.classList.add(correct?'correct':'wrong');
+  if(!correct){
+    el.parentElement.querySelectorAll('.quiz-option').forEach(o=>{if(o.onclick.toString().includes('true'))o.classList.add('correct')});
+  }
+  el.parentElement.style.pointerEvents='none';
+}
+
+// Active sidebar link
+const sections=document.querySelectorAll('.topic-section,section[id]');
+const sidebarLinks=document.querySelectorAll('.sidebar-link');
+window.addEventListener('scroll',()=>{
+  let current='';
+  sections.forEach(s=>{if(window.scrollY>=s.offsetTop-100)current=s.id});
+  sidebarLinks.forEach(l=>{l.classList.toggle('active',l.getAttribute('href')==='#'+current)});
+  // Progress
+  const h=document.documentElement;
+  const pct=Math.round((h.scrollTop/(h.scrollHeight-h.clientHeight))*100);
+  document.getElementById('progressBar').style.width=pct+'%';
+  document.getElementById('progressText').textContent=pct+'% Complete';
+});
+
+// Search filter
+function filterTopics(){
+  const q=document.getElementById('searchInput').value.toLowerCase();
+  document.querySelectorAll('.sidebar-link').forEach(l=>{
+    l.style.display=l.textContent.toLowerCase().includes(q)?'':'none';
+  });
+}
+
+// Animate on scroll
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('animate-in')});
+},{threshold:0.1});
+document.querySelectorAll('.topic-section,.section-block,.card').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
